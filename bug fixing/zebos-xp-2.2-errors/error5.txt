@@ -1,0 +1,313 @@
+ted-externs -I../lib/fm -I../lib/diffserv -I../lib/dste -I../hal/PBR -I../lib/mpls -I../mplsd -I../hal/MPLS -I../lib/mpls_client -I../imi/util -I../nsm -I../nsm/L2 -I../lib/smi/client -I../lib/smi/client/api -I../lib/smi/constant -I../lib/smi -I../lib/smi/client/smi_auto_bgp -I../lib/smi/client/smi_auto_ntp -I../lib/smi/client/smi_auto_imi -I../lib/smi/client/smi_auto_pcep -I../lib/smi/client/smi_auto_pim4 -I../lib/smi/client/smi_auto_mrib6 -I../lib/smi/client/smi_auto_pim -I../lib/smi/client/smi_auto_mld -I../lib/smi/client/smi_auto_igmp -I../lib/smi/client/smi_auto_vlan -I../lib/smi/client/smi_auto_pbb -I../lib/smi/client/smi_auto_igmpsnooping -I../lib/smi/client/smi_auto_routemap -I../lib/smi/client/smi_auto_pim6 -I../lib/smi/client/smi_auto_vrf -I../lib/smi/client/smi_auto_rib -I../lib/smi/client/smi_auto_oamlps -I../lib/smi/client/smi_auto_rsvp -I../lib/smi/client/smi_auto_mrib4 -I../lib/smi/client/smi_auto_ldp -I../lib/smi/client/smi_auto_pbrport -I../lib/smi/client/smi_auto_oambfd -I../lib/smi/client/smi_auto_vpls -I../lib/smi/client/smi_auto_lmp -I../lib/smi/client/smi_auto_vrrp -I../lib/smi/client/smi_auto_bridge -I../lib/smi/client/smi_auto_mplsexp -I../lib/smi/client/smi_auto_acl -I../lib/smi/client/smi_auto_vr -I../lib/smi/client/smi_auto_isis -I../lib/smi/client/smi_auto_sr -I../lib/smi/client/smi_auto_oamrps -I../lib/smi/client/smi_auto_plist -I../lib/smi/client/smi_auto_keychain -I../lib/smi/client/smi_auto_qos -I../lib/smi/client/smi_auto_switchportinterface -I../lib/smi/client/smi_auto_mldsnooping -I../lib/smi/client/smi_auto_dhcpc -I../lib/smi/client/smi_auto_ospf -I../lib/smi/client/smi_auto_oammplstp -I../lib/smi/client/smi_auto_ospfv3 -I../lib/smi/client/smi_auto_mstp -I../lib/smi/client/smi_auto_interface -I../lib/smi/client/smi_auto_mplsbfd -I../lib/smi/client/smi_auto_mplsinterface -I../lib/smi/client/smi_auto_mpls -I../lib/smi/client/smi_auto_gmpls -I../lib/smi/server -I../sys_params/default    -I. -Wall -I../lib/mpls_client -I../lib/mpls -I../hal/MPLS -I../lib/cspf -I../mplsd/gmpls -I../lib/gmpls -I../mplsd/mpls_tnl -I../mplsd/dste -I../lib/dste -I../lib/sr_mpls -I../mplsd/srms -I../lib/diffserv -I../mplsd/vpls -I../mplsd/smi -o ../platform/linux/obj/mplsd/smi/mpls_get_api.o smi/mpls_get_api.c
+smi/mpls_get_api.c: In function 'mpls_get_mpls_vcTable_api_runtime_attrs':
+smi/mpls_get_api.c:529:12: error: 'MPLS_PWINDEX' undeclared (first use in this function)
+       case MPLS_PWINDEX:
+            ^
+smi/mpls_get_api.c:529:12: note: each undeclared identifier is reported only once for each function it appears in
+smi/mpls_get_api.c:532:12: error: 'MPLS_PWTYPE' undeclared (first use in this function)
+       case MPLS_PWTYPE:
+            ^
+smi/mpls_get_api.c:535:12: error: 'MPLS_VCCIRCUIT' undeclared (first use in this function)
+       case MPLS_VCCIRCUIT:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_ftnEntryCMLSEPruntime_ftnIndex_xcCMLSEPentry_api_runtime_attrs':
+smi/mpls_get_api.c:1021:12: error: 'MPLS_XCCMLSEPOPCODE' undeclared (first use in this function)
+       case MPLS_XCCMLSEPOPCODE:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_ilmCMLSEPruntimeCMLSEPentry_inIfentry_ilmindex_api_runtime_attrs':
+smi/mpls_get_api.c:1344:12: error: 'MPLS_ILMOPCODE' undeclared (first use in this function)
+       case MPLS_ILMOPCODE:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_mplsPwCount_api_runtime_attrs':
+smi/mpls_get_api.c:2469:12: error: 'MPLS_TOTCMLSEPPW' undeclared (first use in this function)
+       case MPLS_TOTCMLSEPPW:
+            ^
+smi/mpls_get_api.c:2472:12: error: 'MPLS_ACTIVECMLSEPPW' undeclared (first use in this function)
+       case MPLS_ACTIVECMLSEPPW:
+            ^
+smi/mpls_get_api.c:2475:12: error: 'MPLS_INACTIVECMLSEPPW' undeclared (first use in this function)
+       case MPLS_INACTIVECMLSEPPW:
+            ^
+smi/mpls_get_api.c:2478:12: error: 'MPLS_OAMCMLSEPPW' undeclared (first use in this function)
+       case MPLS_OAMCMLSEPPW:
+            ^
+smi/mpls_get_api.c:2481:12: error: 'MPLS_MPLSPWCOUNT_COUNT' undeclared (first use in this function)
+       case MPLS_MPLSPWCOUNT_COUNT:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_vrfTableCount_api_runtime_attrs':
+smi/mpls_get_api.c:2587:12: error: 'MPLS_VRF4TABLECOUNT' undeclared (first use in this function)
+       case MPLS_VRF4TABLECOUNT:
+            ^
+smi/mpls_get_api.c:2590:12: error: 'MPLS_VRF4TABLEINSTALL' undeclared (first use in this function)
+       case MPLS_VRF4TABLEINSTALL:
+            ^
+smi/mpls_get_api.c:2593:12: error: 'MPLS_VRF4TABLEUP' undeclared (first use in this function)
+       case MPLS_VRF4TABLEUP:
+            ^
+smi/mpls_get_api.c:2596:12: error: 'MPLS_VRF6TABLECOUNT' undeclared (first use in this function)
+       case MPLS_VRF6TABLECOUNT:
+            ^
+smi/mpls_get_api.c:2599:12: error: 'MPLS_VRF6TABLEUP' undeclared (first use in this function)
+       case MPLS_VRF6TABLEUP:
+            ^
+smi/mpls_get_api.c:2602:12: error: 'MPLS_VRFTABLECOUNT_COUNT' undeclared (first use in this function)
+       case MPLS_VRFTABLECOUNT_COUNT:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_ilmTableCount_api_runtime_attrs':
+smi/mpls_get_api.c:2700:12: error: 'MPLS_ILMCOUNT' undeclared (first use in this function)
+       case MPLS_ILMCOUNT:
+            ^
+smi/mpls_get_api.c:2703:12: error: 'MPLS_ILMINSTALLCOUNT' undeclared (first use in this function)
+       case MPLS_ILMINSTALLCOUNT:
+            ^
+smi/mpls_get_api.c:2706:12: error: 'MPLS_ILMUPCOUNT' undeclared (first use in this function)
+       case MPLS_ILMUPCOUNT:
+            ^
+smi/mpls_get_api.c:2709:12: error: 'MPLS_ILMSWAPCOUNT' undeclared (first use in this function)
+       case MPLS_ILMSWAPCOUNT:
+            ^
+smi/mpls_get_api.c:2712:12: error: 'MPLS_ILMSWAPINSTALLCOUNT' undeclared (first use in this function)
+       case MPLS_ILMSWAPINSTALLCOUNT:
+            ^
+smi/mpls_get_api.c:2715:12: error: 'MPLS_ILMSWAPUPCOUNT' undeclared (first use in this function)
+       case MPLS_ILMSWAPUPCOUNT:
+            ^
+smi/mpls_get_api.c:2718:12: error: 'MPLS_ILMPOPCOUNT' undeclared (first use in this function)
+       case MPLS_ILMPOPCOUNT:
+            ^
+smi/mpls_get_api.c:2721:12: error: 'MPLS_ILMPOPINSTALLCOUNT' undeclared (first use in this function)
+       case MPLS_ILMPOPINSTALLCOUNT:
+            ^
+smi/mpls_get_api.c:2724:12: error: 'MPLS_ILMPOPUPCOUNT' undeclared (first use in this function)
+       case MPLS_ILMPOPUPCOUNT:
+            ^
+smi/mpls_get_api.c:2727:12: error: 'MPLS_ILMTABLECOUNT_COUNT' undeclared (first use in this function)
+       case MPLS_ILMTABLECOUNT_COUNT:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_vrfHashTable_api_runtime_attrs':
+smi/mpls_get_api.c:3699:52: error: 'MPLS_VRFHASHINDEX' undeclared (first use in this function)
+     smi_add_int_attr_in_list ((*object)->key_list, MPLS_VRFHASHINDEX, *hashindex);
+                                                    ^
+smi/mpls_get_api.c:3709:14: error: 'MPLS_VRFHASHTABLE_COUNT' undeclared (first use in this function)
+         case MPLS_VRFHASHTABLE_COUNT:
+              ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_vrfHashTable_vrf4table_api_runtime_attrs':
+smi/mpls_get_api.c:3753:45: error: 'MPLS_VRFHASHINDEX' undeclared (first use in this function)
+     ret = get_int_key ((*object)->key_list, MPLS_VRFHASHINDEX, &hashindex);
+                                             ^
+smi/mpls_get_api.c:3798:50: error: 'MPLS_VRF4TABLEINDEX' undeclared (first use in this function)
+   smi_add_int_attr_in_list ((*object)->key_list, MPLS_VRF4TABLEINDEX, temp_pn->tableindex);
+                                                  ^
+smi/mpls_get_api.c:3808:12: error: 'MPLS_MPLSVRFID' undeclared (first use in this function)
+       case MPLS_MPLSVRFID:
+            ^
+smi/mpls_get_api.c:3812:12: error: 'MPLS_VRFHASHTABLE_VRF4TABLE_COUNT' undeclared (first use in this function)
+       case MPLS_VRFHASHTABLE_VRF4TABLE_COUNT:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_vrfHashTable_vrf4table_mplsVrf_api_runtime_attrs':
+smi/mpls_get_api.c:3871:45: error: 'MPLS_VRFHASHINDEX' undeclared (first use in this function)
+     ret = get_int_key ((*object)->key_list, MPLS_VRFHASHINDEX, &hashindex);
+                                             ^
+smi/mpls_get_api.c:3879:45: error: 'MPLS_VRF4TABLEINDEX' undeclared (first use in this function)
+     ret = get_int_key ((*object)->key_list, MPLS_VRF4TABLEINDEX, &tableindex);
+                                             ^
+smi/mpls_get_api.c:3901:50: error: 'MPLS_MPLSVRFINDEX' undeclared (first use in this function)
+   smi_add_int_attr_in_list ((*object)->key_list, MPLS_MPLSVRFINDEX, mpls_vrf->ftn_ix);
+                                                  ^
+smi/mpls_get_api.c:3910:12: error: 'MPLS_MPLSVRFFECADDR' undeclared (first use in this function)
+       case MPLS_MPLSVRFFECADDR:
+            ^
+smi/mpls_get_api.c:3946:89: error: 'struct ftn_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_MATCHEDCMLSEPBYTES, mpls_vrf->stats.matched_bytes);
+                                                                                         ^
+smi/mpls_get_api.c:3949:88: error: 'struct ftn_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_MATCHEDCMLSEPPKTS, mpls_vrf->stats.matched_pkts);
+                                                                                        ^
+smi/mpls_get_api.c:3952:84: error: 'struct ftn_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_TXCMLSEPBYTES, mpls_vrf->stats.tx_bytes);
+                                                                                    ^
+smi/mpls_get_api.c:3955:87: error: 'struct ftn_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_PUSHEDCMLSEPPKTS, mpls_vrf->stats.pushed_pkts);
+                                                                                       ^
+smi/mpls_get_api.c:3960:12: error: 'MPLS_VRFHASHTABLE_VRF4TABLE_MPLSVRF_COUNT' undeclared (first use in this function)
+       case MPLS_VRFHASHTABLE_VRF4TABLE_MPLSVRF_COUNT:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_vrfHashTable_vrf4table_mplsVrf_xcCMLSEPentry_api_runtime_attrs':
+smi/mpls_get_api.c:4003:45: error: 'MPLS_VRFHASHINDEX' undeclared (first use in this function)
+     ret = get_int_key ((*object)->key_list, MPLS_VRFHASHINDEX, &hashindex);
+                                             ^
+smi/mpls_get_api.c:4011:45: error: 'MPLS_VRF4TABLEINDEX' undeclared (first use in this function)
+     ret = get_int_key ((*object)->key_list, MPLS_VRF4TABLEINDEX, &tableindex);
+                                             ^
+smi/mpls_get_api.c:4027:45: error: 'MPLS_MPLSVRFINDEX' undeclared (first use in this function)
+     ret = get_int_key ((*object)->key_list, MPLS_MPLSVRFINDEX, &ftnindex);
+                                             ^
+smi/mpls_get_api.c:4062:12: error: 'MPLS_XCCMLSEPOPCODE' undeclared (first use in this function)
+       case MPLS_XCCMLSEPOPCODE:
+            ^
+smi/mpls_get_api.c:4083:12: error: 'MPLS_VRFHASHTABLE_VRF4TABLE_MPLSVRF_XCCMLSEPENTRY_COUNT' undeclared (first use in this function)
+       case MPLS_VRFHASHTABLE_VRF4TABLE_MPLSVRF_XCCMLSEPENTRY_COUNT:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_vrfHashTable_vrf4table_mplsVrf_xcCMLSEPentry_nhlfeCMLSEPentry_api_runtime_attrs':
+smi/mpls_get_api.c:4128:43: error: 'MPLS_VRFHASHINDEX' undeclared (first use in this function)
+   ret = get_int_key ((*object)->key_list, MPLS_VRFHASHINDEX, &hashindex);
+                                           ^
+smi/mpls_get_api.c:4136:43: error: 'MPLS_VRF4TABLEINDEX' undeclared (first use in this function)
+   ret = get_int_key ((*object)->key_list, MPLS_VRF4TABLEINDEX, &tableindex);
+                                           ^
+smi/mpls_get_api.c:4152:43: error: 'MPLS_MPLSVRFINDEX' undeclared (first use in this function)
+   ret = get_int_key ((*object)->key_list, MPLS_MPLSVRFINDEX, &ftnindex);
+                                           ^
+smi/mpls_get_api.c:4223:81: error: 'struct nhlfe_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_TXCMLSEPBYTES, nhlfe->stats.tx_bytes);
+                                                                                 ^
+smi/mpls_get_api.c:4226:80: error: 'struct nhlfe_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_TCCMLSEPPKTS, nhlfe->stats.tx_pkts);
+                                                                                ^
+smi/mpls_get_api.c:4229:83: error: 'struct nhlfe_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_ERRORCMLSEPPKTS, nhlfe->stats.error_pkts);
+                                                                                   ^
+smi/mpls_get_api.c:4232:85: error: 'struct nhlfe_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_DISCARDCMLSEPPKTS, nhlfe->stats.discard_pkts);
+                                                                                     ^
+smi/mpls_get_api.c:4234:12: error: 'MPLS_VRFHASHTABLE_VRF4TABLE_MPLSVRF_XCCMLSEPENTRY_NHLFECMLSEPENTRY_COUNT' undeclared (first use in this function)
+       case MPLS_VRFHASHTABLE_VRF4TABLE_MPLSVRF_XCCMLSEPENTRY_NHLFECMLSEPENTRY_COUNT:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_vrfHashTable_vrf6table_api_runtime_attrs':
+smi/mpls_get_api.c:4270:45: error: 'MPLS_VRFHASHINDEX' undeclared (first use in this function)
+     ret = get_int_key ((*object)->key_list, MPLS_VRFHASHINDEX, &hashindex);
+                                             ^
+smi/mpls_get_api.c:4314:50: error: 'MPLS_VRF6TABLEINDEX' undeclared (first use in this function)
+   smi_add_int_attr_in_list ((*object)->key_list, MPLS_VRF6TABLEINDEX, temp_pn->tableindex);
+                                                  ^
+smi/mpls_get_api.c:4324:12: error: 'MPLS_MPLSVRFID' undeclared (first use in this function)
+       case MPLS_MPLSVRFID:
+            ^
+smi/mpls_get_api.c:4328:12: error: 'MPLS_VRFHASHTABLE_VRF6TABLE_COUNT' undeclared (first use in this function)
+       case MPLS_VRFHASHTABLE_VRF6TABLE_COUNT:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_vrfHashTable_vrf6table_mplsVrf_api_runtime_attrs':
+smi/mpls_get_api.c:4384:45: error: 'MPLS_VRFHASHINDEX' undeclared (first use in this function)
+     ret = get_int_key ((*object)->key_list, MPLS_VRFHASHINDEX, &hashindex);
+                                             ^
+smi/mpls_get_api.c:4392:45: error: 'MPLS_VRF6TABLEINDEX' undeclared (first use in this function)
+     ret = get_int_key ((*object)->key_list, MPLS_VRF6TABLEINDEX, &tableindex);
+                                             ^
+smi/mpls_get_api.c:4414:50: error: 'MPLS_MPLSVRFINDEX' undeclared (first use in this function)
+   smi_add_int_attr_in_list ((*object)->key_list, MPLS_MPLSVRFINDEX, mpls_vrf->ftn_ix);
+                                                  ^
+smi/mpls_get_api.c:4423:12: error: 'MPLS_MPLSVRFFECADDR' undeclared (first use in this function)
+       case MPLS_MPLSVRFFECADDR:
+            ^
+smi/mpls_get_api.c:4459:89: error: 'struct ftn_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_MATCHEDCMLSEPBYTES, mpls_vrf->stats.matched_bytes);
+                                                                                         ^
+smi/mpls_get_api.c:4462:88: error: 'struct ftn_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_MATCHEDCMLSEPPKTS, mpls_vrf->stats.matched_pkts);
+                                                                                        ^
+smi/mpls_get_api.c:4465:84: error: 'struct ftn_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_TXCMLSEPBYTES, mpls_vrf->stats.tx_bytes);
+                                                                                    ^
+smi/mpls_get_api.c:4468:87: error: 'struct ftn_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_PUSHEDCMLSEPPKTS, mpls_vrf->stats.pushed_pkts);
+                                                                                       ^
+smi/mpls_get_api.c:4473:12: error: 'MPLS_VRFHASHTABLE_VRF6TABLE_MPLSVRF_COUNT' undeclared (first use in this function)
+       case MPLS_VRFHASHTABLE_VRF6TABLE_MPLSVRF_COUNT:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_vrfHashTable_vrf6table_mplsVrf_xcCMLSEPentry_api_runtime_attrs':
+smi/mpls_get_api.c:4516:45: error: 'MPLS_VRFHASHINDEX' undeclared (first use in this function)
+     ret = get_int_key ((*object)->key_list, MPLS_VRFHASHINDEX, &hashindex);
+                                             ^
+smi/mpls_get_api.c:4524:45: error: 'MPLS_VRF6TABLEINDEX' undeclared (first use in this function)
+     ret = get_int_key ((*object)->key_list, MPLS_VRF6TABLEINDEX, &tableindex);
+                                             ^
+smi/mpls_get_api.c:4540:45: error: 'MPLS_MPLSVRFINDEX' undeclared (first use in this function)
+     ret = get_int_key ((*object)->key_list, MPLS_MPLSVRFINDEX, &ftnindex);
+                                             ^
+smi/mpls_get_api.c:4572:12: error: 'MPLS_XCCMLSEPOPCODE' undeclared (first use in this function)
+       case MPLS_XCCMLSEPOPCODE:
+            ^
+smi/mpls_get_api.c:4593:12: error: 'MPLS_VRFHASHTABLE_VRF6TABLE_MPLSVRF_XCCMLSEPENTRY_COUNT' undeclared (first use in this function)
+       case MPLS_VRFHASHTABLE_VRF6TABLE_MPLSVRF_XCCMLSEPENTRY_COUNT:
+            ^
+smi/mpls_get_api.c:4594:56: error: 'MPLS_VRFHASHTABLE_VRF4TABLE_MPLSVRF_XCCMLSEPENTRY_COUNT' undeclared (first use in this function)
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_VRFHASHTABLE_VRF4TABLE_MPLSVRF_XCCMLSEPENTRY_COUNT, 0);
+                                                        ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_vrfHashTable_vrf6table_mplsVrf_xcCMLSEPentry_nhlfeCMLSEPentry_api_runtime_attrs':
+smi/mpls_get_api.c:4638:43: error: 'MPLS_VRFHASHINDEX' undeclared (first use in this function)
+   ret = get_int_key ((*object)->key_list, MPLS_VRFHASHINDEX, &hashindex);
+                                           ^
+smi/mpls_get_api.c:4646:43: error: 'MPLS_VRF6TABLEINDEX' undeclared (first use in this function)
+   ret = get_int_key ((*object)->key_list, MPLS_VRF6TABLEINDEX, &tableindex);
+                                           ^
+smi/mpls_get_api.c:4662:43: error: 'MPLS_MPLSVRFINDEX' undeclared (first use in this function)
+   ret = get_int_key ((*object)->key_list, MPLS_MPLSVRFINDEX, &ftnindex);
+                                           ^
+smi/mpls_get_api.c:4734:81: error: 'struct nhlfe_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_TXCMLSEPBYTES, nhlfe->stats.tx_bytes);
+                                                                                 ^
+smi/mpls_get_api.c:4737:80: error: 'struct nhlfe_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_TCCMLSEPPKTS, nhlfe->stats.tx_pkts);
+                                                                                ^
+smi/mpls_get_api.c:4740:83: error: 'struct nhlfe_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_ERRORCMLSEPPKTS, nhlfe->stats.error_pkts);
+                                                                                   ^
+smi/mpls_get_api.c:4743:85: error: 'struct nhlfe_entry' has no member named 'stats'
+         smi_add_int_attr_in_list ((*object)->attr_list,MPLS_DISCARDCMLSEPPKTS, nhlfe->stats.discard_pkts);
+                                                                                     ^
+smi/mpls_get_api.c:4745:12: error: 'MPLS_VRFHASHTABLE_VRF6TABLE_MPLSVRF_XCCMLSEPENTRY_NHLFECMLSEPENTRY_COUNT' undeclared (first use in this function)
+       case MPLS_VRFHASHTABLE_VRF6TABLE_MPLSVRF_XCCMLSEPENTRY_NHLFECMLSEPENTRY_COUNT:
+            ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_mplsRestart_api_runtime_attrs':
+smi/mpls_get_api.c:4788:50: error: 'MPLS_PROTOCMLSEPNAME' undeclared (first use in this function)
+   smi_add_str_attr_in_list ((*object)->key_list, MPLS_PROTOCMLSEPNAME, modname_strl (restart->proto_id));
+                                                  ^
+smi/mpls_get_api.c:4802:14: error: 'MPLS_GRCMLSEPSTATE' undeclared (first use in this function)
+         case MPLS_GRCMLSEPSTATE:
+              ^
+smi/mpls_get_api.c:4805:14: error: 'MPLS_REMAININGCMLSEPTIME' undeclared (first use in this function)
+         case MPLS_REMAININGCMLSEPTIME:
+              ^
+smi/mpls_get_api.c:4808:14: error: 'MPLS_DISCONNECTCMLSEPTIME' undeclared (first use in this function)
+         case MPLS_DISCONNECTCMLSEPTIME:
+              ^
+smi/mpls_get_api.c:4811:14: error: 'MPLS_MPLSRESTART_COUNT' undeclared (first use in this function)
+         case MPLS_MPLSRESTART_COUNT:
+              ^
+smi/mpls_get_api.c: In function 'mpls_get_mpls_forwardingCMLSEPtableCMLSEPcount_api_runtime_attrs':
+smi/mpls_get_api.c:4940:16: error: 'MPLS_TOTCMLSEPFTN' undeclared (first use in this function)
+           case MPLS_TOTCMLSEPFTN:
+                ^
+smi/mpls_get_api.c:4943:12: error: 'MPLS_FTNINSTALL' undeclared (first use in this function)
+       case MPLS_FTNINSTALL:
+            ^
+smi/mpls_get_api.c:4946:12: error: 'MPLS_FTNUP' undeclared (first use in this function)
+       case MPLS_FTNUP:
+            ^
+smi/mpls_get_api.c:4949:12: error: 'MPLS_TOTCMLSEPPRIFTN' undeclared (first use in this function)
+       case MPLS_TOTCMLSEPPRIFTN:
+            ^
+smi/mpls_get_api.c:4952:12: error: 'MPLS_PRICMLSEPFTNUP' undeclared (first use in this function)
+       case MPLS_PRICMLSEPFTNUP:
+            ^
+smi/mpls_get_api.c:4955:12: error: 'MPLS_PRICMLSEPFTNINSTALL' undeclared (first use in this function)
+       case MPLS_PRICMLSEPFTNINSTALL:
+            ^
+smi/mpls_get_api.c:4958:12: error: 'MPLS_TOTCMLSEPSECONDARYFTN' undeclared (first use in this function)
+       case MPLS_TOTCMLSEPSECONDARYFTN:
+            ^
+smi/mpls_get_api.c:4961:12: error: 'MPLS_SECONDARYCMLSEPFTNINSTALL' undeclared (first use in this function)
+       case MPLS_SECONDARYCMLSEPFTNINSTALL:
+            ^
+smi/mpls_get_api.c:4964:12: error: 'MPLS_SECONDARYCMLSEPFTNUP' undeclared (first use in this function)
+       case MPLS_SECONDARYCMLSEPFTNUP:
+            ^
+smi/mpls_get_api.c:4967:12: error: 'MPLS_FORWARDINGCMLSEPTABLECMLSEPCOUNT_COUNT' undeclared (first use in this function)
+       case MPLS_FORWARDINGCMLSEPTABLECMLSEPCOUNT_COUNT:
+            ^
+make[2]: *** [../platform/linux/obj/mplsd/smi/mpls_get_api.o] Error 1
+make[1]: *** [../../platform/linux/obj/mplsd.a] Error 2
+make: *** [mplsd] Error 2
+mplsd fails to build in 6.x, exit now
+
+bash-4.2$

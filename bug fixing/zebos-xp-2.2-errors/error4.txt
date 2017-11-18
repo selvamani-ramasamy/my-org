@@ -1,0 +1,372 @@
+SOURCE -DSIZEOF_LONG_INT=4 -Wall -Wno-array-bounds -fno-builtin -funsigned-char -fno-signed-char -fno-strict-aliasing -fPIC -Wno-pointer-sign -Wnested-externs -I../lib/fm -I../lib/diffserv -I../lib/dste -I../hal/PBR -I../lib/mpls -I../mplsd -I../hal/MPLS -I../lib/mpls_client -I../imi/util -I../nsm -I../nsm/L2 -I../lib/smi/client -I../lib/smi/client/api -I../lib/smi/constant -I../lib/smi -I../lib/smi/client/smi_auto_bgp -I../lib/smi/client/smi_auto_ntp -I../lib/smi/client/smi_auto_imi -I../lib/smi/client/smi_auto_pcep -I../lib/smi/client/smi_auto_pim4 -I../lib/smi/client/smi_auto_mrib6 -I../lib/smi/client/smi_auto_pim -I../lib/smi/client/smi_auto_mld -I../lib/smi/client/smi_auto_igmp -I../lib/smi/client/smi_auto_vlan -I../lib/smi/client/smi_auto_pbb -I../lib/smi/client/smi_auto_igmpsnooping -I../lib/smi/client/smi_auto_routemap -I../lib/smi/client/smi_auto_pim6 -I../lib/smi/client/smi_auto_vrf -I../lib/smi/client/smi_auto_rib -I../lib/smi/client/smi_auto_oamlps -I../lib/smi/client/smi_auto_rsvp -I../lib/smi/client/smi_auto_mrib4 -I../lib/smi/client/smi_auto_ldp -I../lib/smi/client/smi_auto_pbrport -I../lib/smi/client/smi_auto_oambfd -I../lib/smi/client/smi_auto_vpls -I../lib/smi/client/smi_auto_lmp -I../lib/smi/client/smi_auto_vrrp -I../lib/smi/client/smi_auto_bridge -I../lib/smi/client/smi_auto_mplsexp -I../lib/smi/client/smi_auto_acl -I../lib/smi/client/smi_auto_vr -I../lib/smi/client/smi_auto_isis -I../lib/smi/client/smi_auto_sr -I../lib/smi/client/smi_auto_oamrps -I../lib/smi/client/smi_auto_plist -I../lib/smi/client/smi_auto_keychain -I../lib/smi/client/smi_auto_qos -I../lib/smi/client/smi_auto_switchportinterface -I../lib/smi/client/smi_auto_mldsnooping -I../lib/smi/client/smi_auto_dhcpc -I../lib/smi/client/smi_auto_ospf -I../lib/smi/client/smi_auto_oammplstp -I../lib/smi/client/smi_auto_ospfv3 -I../lib/smi/client/smi_auto_mstp -I../lib/smi/client/smi_auto_interface -I../lib/smi/client/smi_auto_mplsbfd -I../lib/smi/client/smi_auto_mplsinterface -I../lib/smi/client/smi_auto_mpls -I../lib/smi/client/smi_auto_gmpls -I../lib/smi/server -I../sys_params/default    -I../nsm -I../lib/sr/mpls -I../nsm/sr -I../lib/cspf -I../nsm/tunnel -I../nsm/qos -I../nsm/qos/bcm -I../hal -I../nsm/L2 -I../lib/L2 -I../nsm/L2/snmp -I../hal/L3 -I../nsm/rib -I../nsm/errdis -I../nsm/smi -I../lib/smi -o ../platform/linux/obj/nsm/smi/vrf_get_api.o smi/vrf_get_api.c
+smi/vrf_get_api.c: In function 'vrf_get_vrf_vrf_nsmServerClient_api_runtime_attrs':
+smi/vrf_get_api.c:140:49: error: 'VRF_NSMCLIENTID' undeclared (first use in this function)
+   smi_add_int_attr_in_list ((*object)->key_list,VRF_NSMCLIENTID,nsc->client_id);
+                                                 ^
+smi/vrf_get_api.c:140:49: note: each undeclared identifier is reported only once for each function it appears in
+smi/vrf_get_api.c: In function 'vrf_get_vrf_vrf_nsmServerClient_nsmServerEntry_api_runtime_attrs':
+smi/vrf_get_api.c:192:43: error: 'VRF_NSMCLIENTID' undeclared (first use in this function)
+     if (get_int_key ((*object)->key_list, VRF_NSMCLIENTID, &nsm_clinet_id) == -1)
+                                           ^
+smi/vrf_get_api.c:221:50: error: 'VRF_SOCKETID' undeclared (first use in this function)
+   smi_add_int_attr_in_list ((*object)->key_list, VRF_SOCKETID, nse->me->sock);
+                                                  ^
+smi/vrf_get_api.c:228:12: error: 'VRF_SENDMSGCOUNT' undeclared (first use in this function)
+       case VRF_SENDMSGCOUNT:
+            ^
+smi/vrf_get_api.c:231:12: error: 'VRF_RECVMSGCOUNT' undeclared (first use in this function)
+       case VRF_RECVMSGCOUNT:
+            ^
+smi/vrf_get_api.c:234:12: error: 'VRF_CONNECTTIME' undeclared (first use in this function)
+       case VRF_CONNECTTIME:
+            ^
+smi/vrf_get_api.c:240:12: error: 'VRF_READTIME' undeclared (first use in this function)
+       case VRF_READTIME:
+            ^
+smi/vrf_get_api.c:244:12: error: 'VRF_WRITETIME' undeclared (first use in this function)
+       case VRF_WRITETIME:
+            ^
+smi/vrf_get_api.c:248:12: error: 'VRF_PROTOCOLID' undeclared (first use in this function)
+       case VRF_PROTOCOLID:
+            ^
+smi/vrf_get_api.c:255:12: error: 'VRF_NSMSERVICE' undeclared (first use in this function)
+       case VRF_NSMSERVICE:
+            ^
+smi/vrf_get_api.c:260:13: warning: implicit declaration of function 'CML_SET_FLAG' [-Wimplicit-function-declaration]
+             CML_SET_FLAG (service_bit, bit_tmp);
+             ^
+smi/vrf_get_api.c:260:13: warning: nested extern declaration of 'CML_SET_FLAG' [-Wnested-externs]
+smi/vrf_get_api.c: In function 'vrf_get_vrf_vrf_nsmServerClient_nsmServerEntry_nsmRedistribute_api_runtime_attrs':
+smi/vrf_get_api.c:296:43: error: 'VRF_NSMCLIENTID' undeclared (first use in this function)
+     if (get_int_key ((*object)->key_list, VRF_NSMCLIENTID, &nsm_clinet_id) == -1)
+                                           ^
+smi/vrf_get_api.c:312:45: error: 'VRF_SOCKETID' undeclared (first use in this function)
+       if (get_int_key ((*object)->key_list, VRF_SOCKETID, &sock_id) == -1)
+                                             ^
+smi/vrf_get_api.c:335:50: error: 'VRF_TYPE' undeclared (first use in this function)
+   smi_add_int_attr_in_list ((*object)->key_list, VRF_TYPE,redist->type);
+                                                  ^
+smi/vrf_get_api.c:341:12: error: 'VRF_NSMVRFID' undeclared (first use in this function)
+       case VRF_NSMVRFID:
+            ^
+smi/vrf_get_api.c:347:12: error: 'VRF_AFI' undeclared (first use in this function)
+       case VRF_AFI:
+            ^
+make[2]: *** [../platform/linux/obj/nsm/smi/vrf_get_api.o] Error 1
+make[1]: *** [../../platform/linux/obj/nsm.a] Error 2
+make: *** [nsm] Error 2
+nsm fails to build in 6.x, exit now
+
+bash-4.2$
+
+
+File Diff
+~~~~~~~~~~~~~~~~`
+bash-4.2$ git diff HEAD^ HEAD nsm/smi/vrf_get_api.c
+diff --git a/zebos/nsm/smi/vrf_get_api.c b/zebos/nsm/smi/vrf_get_api.c
+index ffe2d85..298b1e8 100644
+--- a/zebos/nsm/smi/vrf_get_api.c
++++ b/zebos/nsm/smi/vrf_get_api.c
+@@ -16,6 +16,7 @@
+ #include "pal.h"
+ #include "lib.h"
+
++#include  "lib/vector.h"
+ #include "config.h"
+ #ifdef HAVE_AUTO_SMI
+ #include "cml_lib_get.h"
+@@ -100,5 +101,266 @@ vrf_get_vrf_vrf_api_runtime_attrs(SMI_OBJECT **object,
+   return cml_auto_ret;
+ }
+
++int vrf_get_vrf_vrf_nsmServerClient_api_runtime_attrs(SMI_OBJECT **object,
++                                struct list *attrIdlist,
++                                struct list *parents_keylist,
++                                void **nextNode,
++                                smi_filter_list* filter,
++                                int match_criteria)
++{
++  int cml_auto_ret = 0;
++  int *id = NULL;
++  struct listnode *node = NULL;
++  struct nsm_server_client *nsc = NULL, *temp_nsc= NULL;
++  int *index = NULL;
++
++  if (!(*nextNode))
++  {
++     index  = (int *)malloc(sizeof(int));
++     if (index == NULL)
++       return NSM_API_ERR_MEM_ALLOC_FAIL;
++     *index = 0;
++     for (;*index < vector_max (ng->server->client);*index = *index + 1)
++     {
++       nsc = vector_slot (ng->server->client, *index);
++         if (nsc == NULL)
++           continue;
++         else
++           break;
++     }
++  }
++  else
++  {
++    index = (int*)*nextNode;
++    nsc = vector_slot (ng->server->client, *index);
++  }
++  if (!nsc)
++    return SMI_NO_DATA;
++
++  smi_add_int_attr_in_list ((*object)->key_list,VRF_NSMCLIENTID,nsc->client_id);
++
++
++  LIST_LOOP (attrIdlist, id, node)
++  {
++    switch (*id)
++    {
++      case VRF_NSMCLIENTID:
++        smi_add_int_attr_in_list ((*object)->attr_list,VRF_NSMCLIENTID, nsc->client_id);
++        break;
++      default:
++        continue;
++    }
++  }
++  *index  += 1;
++  for (;*index < vector_max (ng->server->client);*index = *index + 1)
++  {
++    temp_nsc = vector_slot (ng->server->client, *index);
++    if (temp_nsc == NULL)
++       continue;
++    else
++      break;
++  }
++  if (temp_nsc)
++    (*nextNode) = index;
++  else
++  {
++    *nextNode = NULL;
++    free(index);
++  }
++
++  return cml_auto_ret;
++}
++
++int vrf_get_vrf_vrf_nsmServerClient_nsmServerEntry_api_runtime_attrs(SMI_OBJECT **object,
++                                struct list *attrIdlist,
++                                struct list *parents_keylist,
++                                void **nextNode,
++                                smi_filter_list* filter,
++                                int match_criteria)
++{
++  int cml_auto_ret = 0;
++  int *id = NULL;
++  struct listnode *node = NULL;
++  char buf[255];
++  struct nsm_server_entry *nse = NULL;
++  struct nsm_server_client *nsc = NULL;
++  int nsm_clinet_id = 0;
++  int index = 0;
++  int bit_tmp = 0,service_bit = 0;
++  if (!(*nextNode))
++  {
++    if (get_int_key ((*object)->key_list, VRF_NSMCLIENTID, &nsm_clinet_id) == -1)
++    {
++      return SMI_NO_DATA;
++    }
++    for (;index < vector_max (ng->server->client);index++)
++    {
++      nsc = vector_slot (ng->server->client,index);
++
++        if ( nsc && (nsc->client_id == nsm_clinet_id) )
++          break;
++        else
++          continue;
++    }
++    if(nsc)
++    {
++      nse = nsc->head;
++    }
++    else
++    {
++      return SMI_NO_DATA;
++    }
++  }
++  else
++   nse = (struct nsm_server_entry*)(*nextNode);
++
++  if (!nse)
++    return SMI_NO_DATA;
++
++
++  smi_add_int_attr_in_list ((*object)->key_list, VRF_SOCKETID, nse->me->sock);
++
++
++  LIST_LOOP (attrIdlist, id, node)
++  {
++    switch (*id)
++    {
++      case VRF_SENDMSGCOUNT:
++        smi_add_int_attr_in_list ((*object)->attr_list,VRF_SENDMSGCOUNT, nse->send_msg_count);
++        break;
++      case VRF_RECVMSGCOUNT:
++        smi_add_int_attr_in_list ((*object)->attr_list,VRF_RECVMSGCOUNT, nse->recv_msg_count);
++        break;
++      case VRF_CONNECTTIME:
++        pal_time_calendar (&nse->connect_time, buf);
++        buf [pal_strlen(buf) - 1] = '\0';
++        pal_sprintf(buf,"%s\n",buf);
++        smi_add_str_attr_in_list ((*object)->attr_list,VRF_CONNECTTIME, buf);
++        break;
++      case VRF_READTIME:
++         pal_sprintf(buf,"%s\n",nsm_msg_to_str(nse->last_read_type));
++        smi_add_str_attr_in_list ((*object)->attr_list,VRF_READTIME, buf);
++        break;
++      case VRF_WRITETIME:
++        pal_sprintf(buf,"%s\n",nsm_msg_to_str(nse->last_write_type));
++        smi_add_str_attr_in_list ((*object)->attr_list,VRF_WRITETIME, buf);
++        break;
++      case VRF_PROTOCOLID:
++        pal_sprintf(buf,"%s\n",modname_strl (nse->service.protocol_id));
++        smi_add_str_attr_in_list ((*object)->attr_list,VRF_PROTOCOLID, buf);
++        break;
++      case VRF_SOCKETID:
++        smi_add_int_attr_in_list ((*object)->attr_list,VRF_SOCKETID, nse->me->sock);
++        break;
++      case VRF_NSMSERVICE:
++        for ( bit_tmp = 0; bit_tmp < 32; bit_tmp++)
++        {
++          if (CHECK_FLAG (nse->service.bits, 1 << bit_tmp))
++          {
++            CML_SET_FLAG (service_bit, bit_tmp);
++          }
++        }
++        smi_add_int_attr_in_list ((*object)->attr_list,VRF_NSMSERVICE, service_bit);
++        break;
++      default:
++        continue;
++    }
++  }
++  nse = nse->next;
++  if (nse)
++    *nextNode = (struct nsm_server_entry*)nse;
++  else
++     *nextNode = NULL;
++  /* Fill nextNode if present */
++  return cml_auto_ret;
++}
++
++int vrf_get_vrf_vrf_nsmServerClient_nsmServerEntry_nsmRedistribute_api_runtime_attrs(SMI_OBJECT **object,
++                                struct list *attrIdlist,
++                                struct list *parents_keylist,
++                                void **nextNode,
++                                smi_filter_list* filter,
++                                int match_criteria)
++{
++  int cml_auto_ret = 0;
++  int *id = NULL;
++  struct listnode *node = NULL;
++  struct nsm_redistribute *redist = NULL;
++  struct nsm_server_entry *nse = NULL;
++  struct nsm_server_client *nsc = NULL;
++  int sock_id = 0;
++  int index = 0;
++  int nsm_clinet_id = 0;
++  if (!(*nextNode))
++  {
++    if (get_int_key ((*object)->key_list, VRF_NSMCLIENTID, &nsm_clinet_id) == -1)
++    {
++      return SMI_NO_DATA;
++    }
++    for (;index < vector_max (ng->server->client);index++)
++    {
++      nsc = vector_slot (ng->server->client,index);
++
++        if ( nsc && (nsc->client_id == nsm_clinet_id) )
++          break;
++        else
++          continue;
++    }
++    if(nsc)
++    {
++      nse = nsc->head;
++      if (get_int_key ((*object)->key_list, VRF_SOCKETID, &sock_id) == -1)
++      {
++        return SMI_NO_DATA;
++      }
++      if(!nse)
++       return SMI_NO_DATA;
++      if(sock_id == nse->me->sock)
++      {
++         redist = nse->redist;
++      }
++    }
++    else
++      return SMI_NO_DATA;
++  }
++  else
++   redist  = (struct nsm_redistribute*)(*nextNode);
++  if (!nse)
++    return SMI_NO_DATA;
++
++  /* Fill keylist values for Runtime list*/
++  if(!redist)
++      return SMI_NO_DATA;
++
++  smi_add_int_attr_in_list ((*object)->key_list, VRF_TYPE,redist->type);
++
++  LIST_LOOP (attrIdlist, id, node)
++  {
++    switch (*id)
++    {
++      case VRF_NSMVRFID:
++        smi_add_int_attr_in_list ((*object)->attr_list,VRF_NSMVRFID, redist->vrf_id);
++        break;
++      case VRF_TYPE:
++        smi_add_int_attr_in_list ((*object)->attr_list,VRF_TYPE, redist->type);
++        break;
++      case VRF_AFI:
++        smi_add_int_attr_in_list ((*object)->attr_list,VRF_AFI, redist->afi);
++        break;
++      default:
++        continue;
++    }
++  }
++  redist = redist->next;
++  if (redist)
++    *nextNode = (struct nsm_redistribute*)redist;
++  else
++     *nextNode = NULL;
++  /* Fill nextNode if present */
++  return cml_auto_ret;
++}
++
++
++
+ #endif /* HAVE_VRF */
+ #endif /* HAVE_AUTO_SMI */
+
+
+Wordaround
+================
+bash-4.2$ vi nsm/smi/vrf_get_api.c
+bash-4.2$ git diff nsm/smi/vrf_get_api.c
+diff --git a/zebos/nsm/smi/vrf_get_api.c b/zebos/nsm/smi/vrf_get_api.c
+index 298b1e8..f1f3537 100644
+--- a/zebos/nsm/smi/vrf_get_api.c
++++ b/zebos/nsm/smi/vrf_get_api.c
+@@ -101,6 +101,7 @@ vrf_get_vrf_vrf_api_runtime_attrs(SMI_OBJECT **object,
+   return cml_auto_ret;
+ }
+
++#ifndef HAVE_SAOS
+ int vrf_get_vrf_vrf_nsmServerClient_api_runtime_attrs(SMI_OBJECT **object,
+                                 struct list *attrIdlist,
+                                 struct list *parents_keylist,
+@@ -359,7 +360,7 @@ int vrf_get_vrf_vrf_nsmServerClient_nsmServerEntry_nsmRedistribute_api_runtime_a
+   /* Fill nextNode if present */
+   return cml_auto_ret;
+ }
+-
++#endif /* HAVE_SAOS */
+
+
+ #endif /* HAVE_VRF */
+bash-4.2$

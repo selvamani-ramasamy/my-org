@@ -1,0 +1,106 @@
+
+
+
+
+
+                                    +-----------+                 +---------------+
+                                 .10|           |.10           .11| AS 200        |
+                 +------------------+           +----------------+|  DUT-2        |
+                 | 11.1.1.0/24      |           |    20.1.1.0/24  | (3.3.3.3)     |
+                 |                  +-----------+                 +---------------+
+              .16|                        ISIS
+          +------+----+
+          | AS 100    |
+          |  DUT-1    |
+          | (1.1.1.1) |
+          +------+----+
+              .16|                       ISIS
+                 |                 +-------------+               +----------------+
+                 | 30.1.1.0/24     |             |   50.1.1.0/24 |   AS 300       |
+                 +-----------------+             +---------------+    DUT-3       |
+                               .13 |             |.13         .12|  (5.5.5.5)     |
+                                   +-------------+               +----------------+
+
+
+
+DUT-1 Config
+--------------
+interface a16_10_1
+ ip address 11.1.1.16/24
+!
+interface a16_13_3
+ ip address 30.1.1.16/24
+!
+interface lbk
+ ip address 1.1.1.1/32
+ no multicast
+!
+ router bgp 100
+ redistribute static
+ bgp additional-paths install
+ neighbor 3.3.3.3 remote-as 200
+ neighbor 3.3.3.3 ebgp-multihop 3
+ neighbor 3.3.3.3 fall-over bfd multihop
+ neighbor 5.5.5.5 remote-as 300
+ neighbor 5.5.5.5 ebgp-multihop 3
+ neighbor 5.5.5.5 fall-over bfd multihop
+ allocate-label all
+ address-family ipv4 labeled-unicast
+ neighbor 3.3.3.3 activate
+ neighbor 5.5.5.5 activate
+ exit-address-family
+!
+ip route 7.7.7.0/24 40.1.1.12 description static
+
+
+DUT-2 Config
+--------------
+interface a11_10_2
+ ip address 20.1.1.11/24
+!
+interface lbk
+ ip address 3.3.3.3/32
+ no multicast
+!
+interface a11_10_4
+ ip address 40.1.1.11/24
+!
+!
+router bgp 200
+ redistribute static
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 ebgp-multihop 3
+ neighbor 1.1.1.1 update-source lbk
+ neighbor 1.1.1.1 fall-over bfd multihop
+ allocate-label all
+ address-family ipv4 labeled-unicast
+ neighbor 1.1.1.1 activate
+ exit-address-family
+!
+
+DUT-3 Config
+--------------
+!
+interface a12_13_5
+ ip address 50.1.1.12/24
+!
+interface lbk
+ ip address 5.5.5.5/32
+ no multicast
+!
+interface a12_11_4
+ ip address 40.1.1.12/24
+!
+router bgp 300
+ redistribute static
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 ebgp-multihop 3
+ neighbor 1.1.1.1 update-source lbk
+ neighbor 1.1.1.1 fall-over bfd multihop
+ allocate-label all
+ address-family ipv4 labeled-unicast
+ neighbor 1.1.1.1 activate
+ exit-address-family
+!
+ip route 7.7.7.0/24 40.1.1.11 description static
+!

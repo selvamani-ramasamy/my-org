@@ -1,0 +1,20 @@
+MH BFD
+1. MH BFD using loopback
+2. MH BFD using interface IP address
+
+3. bringdown remote port and check bgp session
+4. bringdown remote port and check multiple sessions
+
+5. bring up the port up -- for single session and for 2 sessions
+
+Clear bgp sessions
+
+MH BFD session using ebgp
+
+
+
+
+
+1. Able to configure bgp BFD without enabling global mode
+   There is no error or warning.  But session might not come up.
+2. Modify default profile parameters

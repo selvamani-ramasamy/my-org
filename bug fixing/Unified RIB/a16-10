@@ -1,0 +1,48 @@
+rstp disable
+mstp disable
+lldp disable
+dhcp client disable
+dhcpv6 client disable
+
+vlan create vlan 20
+vlan add vlan 20 port 2
+vlan create vlan 10
+vlan add vlan 10 port 5
+vlan remove vlan 1 port 2
+vlan remove vlan 1 port 5
+
+Interface create ip-interface a10_11_2 ip 20.1.1.10/24 ip-forwarding on vlan 20
+Interface create ip-interface a10_16_5 ip 11.1.1.10/24 ip-forwarding on vlan 10
+Interface create loopback lbk ip 2.2.2.2
+isis instance create isis-instance isis-1 level L1 area 47.0001
+isis interface attach ip-interface a10_11_2 isis-instance isis-1 level L1
+isis interface attach ip-interface a10_16_5 isis-instance isis-1 level L1
+
+rsvp-te enable
+rsvp-te enable ip-interface lbk
+rsvp-te enable ip-interface a10_11_2
+rsvp-te enable ip-interface a10_16_5
+
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]: FTN IPv4 Add
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  Owner: BGP
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:   Peer Address: 3.3.3.3
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:   Frr Peer Address: 0.0.0.0
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:   Prefix: 7.7.7.0/24
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:   VRF Id: 0
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  VRF ID: 0
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  FEC: 7.7.7.0/24
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  FTN index: 0
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  FTN message_id:6
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  NH addr: 3.3.3.3
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  Out Label: 24320
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  Out index: 11
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  LSP ID: 0 0 0 0 0 0
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  Exp bits: 0
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  LSP-Type: Primary
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  Action type: Redirect LSP
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  IGP-Shortcut disabled
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  LSP Metric: 0
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  Opcode: Push
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  Tunnel id: 0
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  Protected LSP id: 0
+<pvr> : 2017/11/10 00:19:33 MPLSD[ 1427]:  bypass_ftn_ix: 0

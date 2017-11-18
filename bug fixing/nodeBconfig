@@ -1,0 +1,55 @@
+nodeB> con sh bri
+virtual-switch create vs vs1
+virtual-switch create vs vs2
+virtual-switch create vs vs3
+virtual-switch create vs vs4
+module create slot LM1 model PSLM-200-20
+module create slot LM2 model PSLM-200-2
+module create slot LM3 model PSLM-200-20
+module create slot LM4 model PSLM-200-20
+system set host-name nodeB
+interface set interface active ip 10.33.40.155/24
+interface set gateway 10.33.40.1
+interface create loopback lpbk ip 4.4.4.4
+interface create ip-interface IFACE-10.1.4.2 ip 10.1.4.2/24 vs vs1
+interface create ip-interface IFACE-11.1.4.2 ip 11.1.4.2/24 vs vs2
+interface create ip-interface IFACE-10.2.4.2 ip 10.2.4.2/24 vs vs3
+interface create ip-interface IFACE-11.2.4.2 ip 11.2.4.2/24 vs vs4
+cpu-interface sub-interface create cpu-subinterface cpu1
+cpu-interface sub-interface create cpu-subinterface cpu2
+cpu-interface sub-interface create cpu-subinterface cpu3
+cpu-interface sub-interface create cpu-subinterface cpu4
+sub-port create sub-port sp-4/5 parent-port 4/5 classifier-precedence 1 egress-l2-transform push-8100.141.0
+sub-port create sub-port sp-4/4 parent-port 4/4 classifier-precedence 1 egress-l2-transform push-8100.142.0
+sub-port create sub-port sp-4/12 parent-port 4/12 classifier-precedence 1 egress-l2-transform push-8100.241.0
+sub-port create sub-port sp-4/14 parent-port 4/14 classifier-precedence 1 egress-l2-transform push-8100.242.0
+sub-port add sub-port sp-4/5 class-element 1 vtag-stack 141
+sub-port add sub-port sp-4/4 class-element 1 vtag-stack 142
+sub-port add sub-port sp-4/12 class-element 1 vtag-stack 241
+sub-port add sub-port sp-4/14 class-element 1 vtag-stack 242
+rsvp-te set ip-interface IFACE-10.1.4.2 hello-interval 10
+rsvp-te set ip-interface IFACE-11.1.4.2 hello-interval 10
+rsvp-te set ip-interface IFACE-10.2.4.2 hello-interval 10
+rsvp-te set ip-interface IFACE-11.2.4.2 hello-interval 10
+rsvp-te enable ip-interface lpbk
+rsvp-te enable ip-interface IFACE-10.1.4.2
+rsvp-te enable ip-interface IFACE-11.1.4.2
+rsvp-te enable ip-interface IFACE-10.2.4.2
+rsvp-te enable ip-interface IFACE-11.2.4.2
+rsvp-te enable
+isis instance create isis-instance isis1 level L1 area 47.1234
+isis interface attach ip-interface IFACE-10.1.4.2 isis-instance isis1 level L1
+isis interface attach ip-interface IFACE-11.1.4.2 isis-instance isis1 level L1
+isis interface attach ip-interface IFACE-10.2.4.2 isis-instance isis1 level L1
+isis interface attach ip-interface IFACE-11.2.4.2 isis-instance isis1 level L1
+virtual-switch interface attach sub-port sp-4/5 vs vs1
+virtual-switch interface attach cpu-subinterface cpu1 vs vs1
+virtual-switch interface attach sub-port sp-4/4 vs vs2
+virtual-switch interface attach cpu-subinterface cpu2 vs vs2
+virtual-switch interface attach sub-port sp-4/12 vs vs3
+virtual-switch interface attach cpu-subinterface cpu3 vs vs3
+virtual-switch interface attach sub-port sp-4/14 vs vs4
+virtual-switch interface attach cpu-subinterface cpu4 vs vs4
+system shell set global-more off
+system shell set global-inactivity-timer off
+nodeB>

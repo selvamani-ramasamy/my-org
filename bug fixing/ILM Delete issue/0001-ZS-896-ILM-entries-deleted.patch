@@ -1,0 +1,138 @@
+From fad9d4e026f7f3b7156e712d2acb7531d92bc035 Mon Sep 17 00:00:00 2001
+From: sramasam <sramasam@ciena.com>
+Date: Tue, 31 Oct 2017 15:40:12 -0700
+Subject: [PATCH] ZS-896 ILM entries deleted
+
+---
+ zebos/bgpd/bgp_lu.c    |  3 ++
+ zebos/bgpd/bgp_route.c | 79 ++++++++++++++++++++++++++++++++------------------
+ 2 files changed, 53 insertions(+), 29 deletions(-)
+
+diff --git a/zebos/bgpd/bgp_lu.c b/zebos/bgpd/bgp_lu.c
+index aa8ef02..4fc9b77 100644
+--- a/zebos/bgpd/bgp_lu.c
++++ b/zebos/bgpd/bgp_lu.c
+@@ -103,6 +103,9 @@ bgp_labeled_unicast_announce (struct bgp *bgp,
+              }
+           }
+ 
++	if (old_select && old_select->label_req)
++	  bgp_mpls_label_req_release_all (&old_select->label_req);
++
+         /* Route is from another PE-router */
+         if (afi == AFI_IP)
+           {
+diff --git a/zebos/bgpd/bgp_route.c b/zebos/bgpd/bgp_route.c
+index 2d925da..7e9f1eb 100755
+--- a/zebos/bgpd/bgp_route.c
++++ b/zebos/bgpd/bgp_route.c
+@@ -6385,7 +6385,7 @@ void bgp_update_frr_route (struct bgp *bgp, struct bgp_node *rn,
+            {
+              if (afi == AFI_IP)
+                {
+-                 if (IPV4_NEXTHOP_ADDR_CMP(ri->attr, best_route->attr) != 0)
++		 if (IPV4_NEXTHOP_ADDR_CMP(ri->attr, best_route->attr) != 0)
+                    break;
+                }
+  #ifdef HAVE_IPV6
+@@ -13580,6 +13580,10 @@ bgp_clear_route_table (struct bgp_peer *peer,
+   safi_t org_safi;
+ #endif /* HAVE_BGP_LU*/
+ 
++#if defined (HAVE_BGP_LU) || defined (HAVE_6PE)
++  u_int8_t advertised = 0;
++#endif /* defined (HAVE_BGP_LU) || defined (HAVE_6PE) */
++
+   baai = BGP_AFI2BAAI (afi);
+   bsai = BGP_SAFI2BSAI (safi);
+ 
+@@ -13635,6 +13639,51 @@ bgp_clear_route_table (struct bgp_peer *peer,
+       safi = SAFI_LABELED_UNICAST;
+ #endif /* HAVE_BGP_LU */
+ 
++#ifdef HAVE_MPLS
++#if defined (HAVE_BGP_LU) || defined (HAVE_6PE)
++       /* Release label for LU negotiated peers*/
++       if (peer->afc_nego [BGP_AFI2BAAI (afi)][BSAI_LABELED_UNICAST] &&
++#ifdef HAVE_BGP_MPLS_RESTART
++          !CHECK_FLAG (peer->gstatus, PEER_GSTATUS_PRESERVE_ON) &&
++#endif /* HAVE_BGP_MPLS_RESTART*/
++            peer->afc_nego[baai][BSAI_LABELED_UNICAST])
++         {
++#ifndef  HAVE_BGP_MEM_USAGE_REDUCTION
++           for (aout = ADJ_OUT_P_GET(rn->adj_out); aout; aout = aout_next)
++             {
++               aout_next = ADJ_OUT_P_GET(aout->next);
++               if (aout->peer == peer)
++                 {
++                   advertised = 1;
++                   break;  
++                 }       
++             }       
++#else
++           aout = ADJ_OUT_LOOKUP (rn->adj_out_vec, peer->peer_i);
++           if ((aout != NULL))
++             advertised = 1;
++#endif /* HAVE_BGP_MEM_USAGE_REDUCTION */
++           if (advertised)
++             {       
++               for (ri = rn->info; ri; ri = ri_next)
++                 {
++                   ri_next = ri->next;
++                   if (ri->peer != peer && ri->label_req)
++                     {
++                       if (!ri->label_req->next)
++                         continue;
++
++                       ri->label_req->next->refcnt--;
++
++                       if (ri->label_req->next->refcnt == 0)
++                         bgp_mpls_label_req_release_all (&ri->label_req);
++                     }
++                 }
++             }
++         }
++#endif /* defined (HAVE_BGP_LU) || defined (HAVE_6PE) */
++#endif /* HAVE_MPLS */
++
+       for (ri = rn->info; ri; ri = ri_next)
+         {
+          ri_next = ri->next;
+@@ -13700,34 +13749,6 @@ bgp_clear_route_table (struct bgp_peer *peer,
+            }
+         }
+ 
+-#ifdef HAVE_MPLS
+-#if defined (HAVE_BGP_LU) || defined (HAVE_6PE)
+-       /* Release label for LU negotiated peers*/
+-       if (peer->afc_nego [BGP_AFI2BAAI (afi)][BSAI_LABELED_UNICAST] &&
+-#ifdef HAVE_BGP_MPLS_RESTART
+-          !CHECK_FLAG (peer->gstatus, PEER_GSTATUS_PRESERVE_ON) &&
+-#endif /* HAVE_BGP_MPLS_RESTART*/
+-            peer->afc_nego[baai][BSAI_LABELED_UNICAST])
+-         {
+-           for (ri = rn->info; ri; ri = ri_next)
+-             {
+-               ri_next = ri->next;
+-               if (ri->peer != peer && ri->label_req)
+-                 {
+-
+-                  if (!ri->label_req->next)
+-                    continue;
+-
+-                  ri->label_req->next->refcnt--;
+-
+-                   if (ri->label_req->next->refcnt == 0)
+-                     bgp_mpls_label_req_release_all (&ri->label_req);
+-                 }
+-             }
+-         }
+-#endif /* defined (HAVE_BGP_LU) || defined (HAVE_6PE) */
+-#endif /* HAVE_MPLS */
+-
+       /* for Adj_in Remove */
+       for (ain = rn->adj_in; ain; ain = ain_next)
+         {
+-- 
+2.1.1
+

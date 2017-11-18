@@ -1,0 +1,46 @@
+Vlan create vlan 30
+Vlan add vlan 30 port 6
+
+Vlan create vlan 50
+Vlan add vlan 50 port 5
+
+Interface create ip-interface a13_16_6 ip 30.1.1.13/24 ip-forwarding on vlan 30
+Interface create ip-interface a13_12_5 ip 50.1.1.13/24 ip-forwarding on vlan 50
+Interface create loopback lbk ip 4.4.4.4
+
+isis instance create isis-instance isis-1 level L1 area 47.0001
+isis interface attach ip-interface a13_16_6 isis-instance isis-1 level L1
+isis interface attach ip-interface a13_12_5 isis-instance isis-1 level L1
+
+bgp create as 100
+bgp address-family add as 100 afi ipv4 safi unicast
+bgp address-family add as 100 afi ipv4 safi labeled-unicast
+bgp allocate-label-all set as 100
+bgp neighbor add as 100 nbr 50.1.1.11 remote-as 100
+bgp neighbor add as 100 nbr 60.1.1.11 remote-as 100
+bgp redistribute add as 100 type connected
+
+Conf t
+router bgp 100
+allocate-label all
+redistribute static
+!bgp additional-paths install
+ 
+neighbor 60.1.1.11 remote-as 100
+Address-family ipv4 unicast
+exit-address-family
+Address-family ipv4 labeled-unicast
+Exit-address-family
+neighbor 60.1.1.11 next-hop-self
+
+neighbor 50.1.1.11 remote-as 100
+address-family ipv4 unicast
+exit-address-family
+Address-family ipv4 labeled-unicast
+Exit-address-family
+  neighbor 50.1.1.11 next-hop-self
+ 
+address-family ipv4 labeled-unicast
+  neighbor 60.1.1.11 activate
+  neighbor 50.1.1.11 activate
+  exit-address-family

@@ -1,0 +1,56 @@
+
+
+private-forwarding-groups disable vlan 127
+private-forwarding-groups disable policy mgmt
+
+rstp disable
+mstp disable
+lldp disable
+dhcp client disable
+dhcpv6 client disable
+
+vlan create vlan 20
+vlan add vlan 20 port 2
+vlan create vlan 10
+vlan add vlan 10 port 5
+vlan remove vlan 1 port 2
+vlan remove vlan 1 port 5
+
+
+Interface create ip-interface a10_11_2 ip 20.1.1.10/24 ip-forwarding on vlan 20
+Interface create ip-interface a10_16_5 ip 10.1.1.10/24 ip-forwarding on vlan 10
+Interface create loopback lbk ip 2.2.2.2
+isis instance create isis-instance isis-1 level L1 area 47.0001
+isis interface attach ip-interface a10_11_2 isis-instance isis-1 level L1
+isis interface attach ip-interface a10_16_5 isis-instance isis-1 level L1
+
+!isis interface detach ip-interface a16_10_11_2
+!isis instance delete isis-instance isis-1
+
+
+
+bgp create as 100
+bgp address-family add as 100 afi ipv4 safi unicast
+bgp address-family add as 100 afi ipv4 safi labeled-unicast
+bgp allocate-label-all set as 100
+bgp redistribute add as 100 type static
+bgp neighbor add as 100 nbr 3.3.3.3 remote-as 100
+bgp update-source set as 100 nbr 3.3.3.3 if-name lbk
+
+ip route add destination 20.20.20.20/32 gateway 20.1.1.11
+
+bgp redistribute
+ip route add destination 11.11.11.11/32 gateway 20.1.1.11
+Conf t
+router bgp 100
+allocate-label all
+redistribute static
+bgp additional-paths install
+
+neighbor 20.1.1.11 remote-as 100
+Address-family ipv4 unicast
+exit-address-family
+Address-family ipv4 labeled-unicast
+Exit-address-family
+address-family ipv4 labeled-unicast
+  neighbor 20.1.1.11 activate

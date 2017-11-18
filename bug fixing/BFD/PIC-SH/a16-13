@@ -1,0 +1,32 @@
+rstp disable
+mstp disable
+lldp disable
+dhcp client disable
+dhcpv6 client disable
+
+Vlan create vlan 30
+Vlan add vlan 30 port 6
+
+Vlan create vlan 50
+Vlan add vlan 50 port 5
+
+Interface create ip-interface a13_16_6 ip 30.1.1.13/24 ip-forwarding on vlan 30
+Interface create ip-interface a13_12_5 ip 50.1.1.13/24 ip-forwarding on vlan 50
+Interface create loopback lbk ip 4.4.4.4
+isis instance create isis-instance isis-1 level L1 area 47.0001
+isis interface attach ip-interface a13_16_6 isis-instance isis-1 level L1
+isis interface attach ip-interface a13_12_5 isis-instance isis-1 level L1
+
+ip route add destination 7.7.7.0/24 gateway 50.1.1.13
+
+bgp create as 100
+bgp address-family add as 100 afi ipv4 safi labeled-unicast
+bgp address-family add as 100 afi ipv4 safi unicast
+bgp allocate-label-all set as 100
+bgp neighbor add as 100 nbr 1.1.1.1 remote-as 100
+bgp update-source set as 100 nbr 1.1.1.1 if-name lbk
+bgp next-hop-self add as 100 nbr 1.1.1.1 afi ipv4 safi unicast
+bgp next-hop-self add as 100 nbr 1.1.1.1 afi ipv4 safi labeled-unicast
+bgp redistribute add as 100 type static
+
+bgp bfd enable as 100 nbr 1.1.1.1 multihop

@@ -1,0 +1,25 @@
+
+Vlan create vlan 50
+Vlan create vlan 40
+Vlan add vlan 50 port 5
+vlan add vlan 40 port 4
+
+Interface create ip-interface a12_13_5 ip 50.1.1.12/24 ip-forwarding on vlan 50
+Interface create ip-interface a12_11_4 ip 40.1.1.12/24 ip-forwarding on vlan 40
+
+Interface create loopback lbk ip 5.5.5.5
+
+isis instance create isis-instance isis-1 level L1 area 47.0001
+isis interface attach ip-interface a12_13_5 isis-instance isis-1 level L1
+
+ip route add destination 7.7.7.0/24 gateway 40.1.1.11
+
+bgp create as 100
+bgp address-family add as 100 afi ipv4 safi labeled-unicast
+bgp address-family add as 100 afi ipv4 safi unicast
+bgp allocate-label-all set as 100
+bgp neighbor add as 100 nbr 1.1.1.1 remote-as 100
+bgp update-source set as 100 nbr 1.1.1.1 if-name lbk
+bgp next-hop-self add as 100 nbr 1.1.1.1 afi ipv4 safi unicast
+bgp next-hop-self add as 100 nbr 1.1.1.1 afi ipv4 safi labeled-unicast
+bgp redistribute add as 100 type static

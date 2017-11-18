@@ -1,0 +1,522 @@
+switchportinterface -I../lib/smi/client/smi_auto_mldsnooping -I../lib/smi/client/smi_auto_dhcpc -I../lib/smi/client/smi_auto_ospf -I../lib/smi/client/smi_auto_oammplstp -I../lib/smi/client/smi_auto_ospfv3 -I../lib/smi/client/smi_auto_mstp -I../lib/smi/client/smi_auto_interface -I../lib/smi/client/smi_auto_mplsbfd -I../lib/smi/client/smi_auto_mplsinterface -I../lib/smi/client/smi_auto_mpls -I../lib/smi/client/smi_auto_gmpls -I../lib/smi/server -I../sys_params/default    -I../nsm -I../lib/sr/mpls -I../nsm/sr -I../lib/cspf -I../nsm/tunnel -I../nsm/qos -I../nsm/qos/bcm -I../hal -I../nsm/L2 -I../lib/L2 -I../nsm/L2/snmp -I../hal/L3 -I../nsm/rib -I../nsm/errdis -I../nsm/smi -I../lib/smi -o ../platform/linux/obj/nsm/smi/interface_get_api.o smi/interface_get_api.c
+In file included from smi/interface_get_api.h:90:0,
+                 from smi/interface_get_api.c:18:
+../nsm/nsm_api.h:897:63: warning: 'struct hal_ip_access_grp' declared inside parameter list
+                               int action, int dir_type,struct interface *ifp);
+                                                               ^
+../nsm/nsm_api.h:897:63: warning: its scope is only this definition or declaration, which is probably not what you want
+smi/interface_get_api.c: In function 'interface_get_interface_interface_api_runtime_attrs':
+smi/interface_get_api.c:50:18: warning: unused variable 'vr' [-Wunused-variable]
+   struct ipi_vr *vr = ipi_vr_get_privileged (nzg);
+                  ^
+smi/interface_get_api.c:48:7: warning: unused variable 'i' [-Wunused-variable]
+   int i = 0;
+       ^
+smi/interface_get_api.c: In function 'interface_get_interface_nsmMaster_featureProfile_api_runtime_attrs':
+smi/interface_get_api.c:890:12: error: 'INTERFACE_CURRENTPROFILE' undeclared (first use in this function)
+       case INTERFACE_CURRENTPROFILE:
+            ^
+smi/interface_get_api.c:890:12: note: each undeclared identifier is reported only once for each function it appears in
+smi/interface_get_api.c:893:12: error: 'INTERFACE_NEWPROFILE' undeclared (first use in this function)
+       case INTERFACE_NEWPROFILE:
+            ^
+smi/interface_get_api.c: In function 'interface_get_interface_nsmMaster_routeMap_api_runtime_attrs':
+smi/interface_get_api.c:924:12: error: 'INTERFACE_ROUTEMAPNAME' undeclared (first use in this function)
+       case INTERFACE_ROUTEMAPNAME:
+            ^
+smi/interface_get_api.c:927:12: error: 'INTERFACE_ROUTEMAPTYPE' undeclared (first use in this function)
+       case INTERFACE_ROUTEMAPTYPE:
+            ^
+smi/interface_get_api.c:931:12: error: 'INTERFACE_ROUTEMAPPREF' undeclared (first use in this function)
+       case INTERFACE_ROUTEMAPPREF:
+            ^
+make[3]: *** [../platform/linux/obj/nsm/smi/interface_get_api.o] Error 1
+make[2]: *** [../../platform/linux/obj/nsm.a] Error 2
+make[1]: *** [nsm] Error 2
+/localdata/project/ipi-daemons-integration/packages-saos-sds/zebos/zebos:
+
+Fail: ./cgo TARG=saos-sds zebos V=1
+
+bash-4.2$
+
+
+File diff
+~~~~~~~~~~~~~~
+bash-4.2$ git diff HEAD^ HEAD nsm/smi/interface_get_api.c
+diff --git a/zebos/nsm/smi/interface_get_api.c b/zebos/nsm/smi/interface_get_api.c
+index f178831..b642ba0 100644
+--- a/zebos/nsm/smi/interface_get_api.c
++++ b/zebos/nsm/smi/interface_get_api.c
+@@ -514,6 +514,14 @@ int interface_get_interface_interface_api_runtime_attrs(SMI_OBJECT **object,
+         }
+         break;
+ #endif /* HAVE_HAL */
++#ifndef HAVE_MPLS_RIB
++       case INTERFACE_TOTCMLSEPFTN:
++        smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_TOTCMLSEPFTN,  listcount (mif->dep_ftn_head));
++        break;
++      case INTERFACE_TOTCMLSEPILM:
++        smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_TOTCMLSEPILM,  listcount (mif->dep_ilm_head));
++        break;
++#endif
+       default:
+         continue;
+     }
+@@ -521,6 +529,415 @@ int interface_get_interface_interface_api_runtime_attrs(SMI_OBJECT **object,
+   return cml_auto_ret;
+ }
+
++int
++interface_get_interface_interface_ifStat_api_runtime_attrs(SMI_OBJECT **object,
++                                struct list *attrIdlist,
++                                struct list *parents_keylist,
++                                void **nextNode,
++                                smi_filter_list* filter,
++                                int match_criteria)
++{
++  int cml_auto_ret = 0;
++  int *id = NULL;
++  struct listnode *node = NULL;
++  struct interface *ifp = NULL;
++#if (defined HAVE_HAL) && (!defined HAVE_SWFWDR)
++  struct hal_if_counters if_stats;
++#endif /* (defined HAVE_HAL) && (!defined HAVE_SWFWDR) */
++
++  ifp = get_interface_ifp_node((*object)->key_list);
++  if(!ifp)
++    return SMI_NO_DATA;
++
++#if defined HAVE_SWFWDR || defined HAVE_BROADCOM
++#if defined HAVE_BROADCOM && defined HAVE_PROC_NET_DEV
++  if ((ifp->vrf != NULL) && (ifp->hw_type == IF_TYPE_MGMT ||
++                             ifp->hw_type == IF_TYPE_LOOPBACK))
++   {
++    pal_if_stats_update (if_kernel_name(ifp),
++                         ifp->vrf->fib_id, &ifp->stats);
++   }
++  else
++   {
++#endif /* HAVE_BROADCOM && HAVE_PROC_NET_DEV */
++#endif /* defined HAVE_SWFWDR || defined HAVE_BROADCOM */
++#if (defined HAVE_HAL) && (!defined HAVE_SWFWDR)
++    pal_memset(&if_stats, 0, sizeof (struct hal_if_counters));
+
++    cml_auto_ret = hal_if_get_counters(ifp->ifindex, &if_stats);
++    if(cml_auto_ret<0)
++     return SMI_NO_DATA;
++#endif /* (defined HAVE_HAL) && !(defined HAVE_SWFWDR)*/
++#if defined HAVE_SWFWDR || defined HAVE_BROADCOM
++#if defined HAVE_BROADCOM && defined HAVE_PROC_NET_DEV
++   }
++#endif /* HAVE_BROADCOM && HAVE_PROC_NET_DEV */
++#endif /* defined HAVE_SWFWDR || defined HAVE_BROADCOM */
++
++  LIST_LOOP (attrIdlist, id, node)
++  {
++    switch (*id)
++    {
++#if defined HAVE_SWFWDR || defined HAVE_BROADCOM
++     if ((ifp->vrf != NULL) && (ifp->hw_type == IF_TYPE_MGMT ||
++                                 ifp->hw_type == IF_TYPE_LOOPBACK))
++       {
+
++        case INTERFACE_RXPACKETS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_RXPACKETS, ifp->stats.rx_packets);
++          break;
++        case INTERFACE_TXPACKETS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_TXPACKETS, ifp->stats.tx_packets);
++          break;
++        case INTERFACE_RXBYTES:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_RXBYTES, ifp->stats.rx_bytes);
++          break;
++        case INTERFACE_TXBYTES:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_TXBYTES, ifp->stats.tx_bytes);
++          break;
++        case INTERFACE_RXERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_RXERRORS, ifp->stats.rx_errors);
++          break;
++        case INTERFACE_TXERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_TXERRORS, ifp->stats.tx_errors);
++          break;
++        case INTERFACE_RXDROPPED:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_RXDROPPED, ifp->stats.rx_dropped);
++          break;
++        case INTERFACE_TXDROPPED:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_TXDROPPED, ifp->stats.tx_dropped);
++          break;
++        case INTERFACE_RXMULTICAST:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_RXMULTICAST, ifp->stats.rx_multicast);
++          break;
++        case INTERFACE_RXCOMPRESSED:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_RXCOMPRESSED, ifp->stats.rx_compressed);
++          break;
++        case INTERFACE_TXCOMPRESSED:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_TXCOMPRESSED, ifp->stats.tx_compressed);
++          break;
++        case INTERFACE_COLLISIONS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_COLLISIONS, ifp->stats.collisions);
++          break;
++        case INTERFACE_URPFDROPPED:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_URPFDROPPED, ifp->stats.urpf_dropped);
++          break;
++        case INTERFACE_RXLENGTHERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_RXLENGTHERRORS, ifp->stats.rx_length_errors);
++          break;
++        case INTERFACE_RXOVERERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_RXOVERERRORS, ifp->stats.rx_over_errors);
++          break;
++        case INTERFACE_RXCRCERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_RXCRCERRORS, ifp->stats.rx_crc_errors);
++          break;
++        case INTERFACE_RXFRAMEERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_RXFRAMEERRORS, ifp->stats.rx_frame_errors);
++          break;
++        case INTERFACE_RXFIFOERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_RXFIFOERRORS, ifp->stats.rx_fifo_errors);
++          break;
++        case INTERFACE_RXMISSEDERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_RXMISSEDERRORS, ifp->stats.rx_missed_errors);
++          break;
++        case INTERFACE_TXABORTEDERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_TXABORTEDERRORS, ifp->stats.tx_aborted_errors);
++          break;
++        case INTERFACE_TXCARRIERERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_TXCARRIERERRORS, ifp->stats.tx_carrier_errors);
++          break;
++        case INTERFACE_TXFIFOERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_TXFIFOERRORS, ifp->stats.tx_fifo_errors);
++          break;
++        case INTERFACE_TXHEARTBEATERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_TXHEARTBEATERRORS, ifp->stats.tx_heartbeat_errors);
++          break;
++        case INTERFACE_TXWINDOWERRORS:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_TXWINDOWERRORS, ifp->stats.tx_window_errors);
++          break;
++        case INTERFACE_INTERFACE_IFSTAT_COUNT:
++          smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_INTERFACE_IFSTAT_COUNT, 1);
++          break;
++      }
++     else
++#endif /* defined HAVE_SWFWDR || defined HAVE_BROADCOM */
++      {
++#if (defined HAVE_HAL) && (!defined HAVE_SWFWDR)
++       case INTERFACE_OUTERRORS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_OUTERRORS, if_stats.out_errors.ll);
++          break;
++        case INTERFACE_OUTDISCARDS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_OUTDISCARDS, if_stats.out_discards.ll);
++          break;
++        case INTERFACE_OUTMCPKTS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_OUTMCPKTS, if_stats.out_mc_pkts.ll);
++          break;
++        case INTERFACE_OUTUCPKTS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_OUTUCPKTS, if_stats.out_uc_pkts.ll);
++          break;
++        case INTERFACE_INUCPKTS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_INUCPKTS, if_stats.in_uc_pkts.ll);
++          break;
++        case INTERFACE_INDISCARDS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_INDISCARDS, if_stats.in_discards.ll);
++          break;
++        case INTERFACE_GOODOCTETSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_GOODOCTETSRCV, if_stats.good_octets_rcv.ll);
++          break;
++        case INTERFACE_BADOCTETSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_BADOCTETSRCV, if_stats.bad_octets_rcv.ll);
++          break;
++        case INTERFACE_MACTRANSMITERR:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_MACTRANSMITERR, if_stats.mac_transmit_err.ll);
++          break;
++        case INTERFACE_GOODPKTSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_GOODPKTSRCV, if_stats.good_pkts_rcv.ll);
++          break;
++        case INTERFACE_BADPKTSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_BADPKTSRCV, if_stats.bad_pkts_rcv.ll);
++          break;
++         case INTERFACE_PKTSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTSRCV, if_stats.pkts_rcv.ll);
++          break;
++        case INTERFACE_BRDCPKTSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_BRDCPKTSRCV, if_stats.brdc_pkts_rcv.ll);
++          break;
++        case INTERFACE_MCPKTSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_MCPKTSRCV, if_stats.mc_pkts_rcv.ll);
++          break;
++        case INTERFACE_PKTS64OCTETSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS64OCTETSRCV, if_stats.pkts_64_octets_rcv.ll);
++          break;
++        case INTERFACE_PKTS65TO127OCTETSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS65TO127OCTETSRCV, if_stats.pkts_65_127_octets_rcv.ll);
++          break;
++        case INTERFACE_PKTS128TO255OCTETSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS128TO255OCTETSRCV, if_stats.pkts_128_255_octets_rcv.ll);
++          break;
++        case INTERFACE_PKTS256TO511OCTETSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS256TO511OCTETSRCV, if_stats.pkts_256_511_octets.ll);
++          break;
++        case INTERFACE_PKTS512TO1023OCTETSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS512TO1023OCTETSRCV, if_stats.pkts_512_1023_octets_rcv.ll);
++          break;
++        case INTERFACE_PKTS1024TO1518OCTETSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS1024TO1518OCTETSRCV, if_stats.pkts_1024_1518_octets_rcv.ll);
++          break;
++        case INTERFACE_PKTS1519TO2047OCTETSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS1519TO2047OCTETSRCV, if_stats.pkts_1519_2047_octets_rcv.ll);
++          break;
++        case INTERFACE_PKTS2048TO4095OCTETSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS2048TO4095OCTETSRCV, if_stats.pkts_2048_4095_octets_rcv.ll);
++          break;
++        case INTERFACE_PKTS4096TO9216OCTETSRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS4096TO9216OCTETSRCV, if_stats.pkts_4096_9216_octets_rcv.ll);
++          break;
++        case INTERFACE_PKTS64OCTETS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS64OCTETS, if_stats.pkts_64_octets.ll);
++          break;
++        case INTERFACE_PKTS65TO127OCTETS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS65TO127OCTETS, if_stats.pkts_65_127_octets.ll);
++          break;
++        case INTERFACE_PKTS128TO255OCTETS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS128TO255OCTETS, if_stats.pkts_128_255_octets.ll);
++          break;
++        case INTERFACE_PKTS256TO511OCTETS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS256TO511OCTETS, if_stats.pkts_256_511_octets.ll);
++          break;
++        case INTERFACE_PKTS512TO1023OCTETS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS512TO1023OCTETS, if_stats.pkts_512_1023_octets.ll);
++          break;
++        case INTERFACE_PKTS1024MAXOCTETS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS1024MAXOCTETS, if_stats.pkts_1024_max_octets.ll);
++          break;
++        case INTERFACE_PKTS1519TO2047OCTETS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS1519TO2047OCTETS, if_stats.pkts_1519_2047_octets.ll);
++          break;
++        case INTERFACE_PKTS2048TO4095OCTETS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS2048TO4095OCTETS, if_stats.pkts_2048_4095_octets.ll);
++          break;
++        case INTERFACE_PKTS4096TO9216OCTETS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PKTS4096TO9216OCTETS, if_stats.pkts_4096_9216_octets.ll);
++          break;
++         case INTERFACE_GOODOCTETSSENT:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_GOODOCTETSSENT, if_stats.good_octets_sent.ll);
++          break;
++        case INTERFACE_GOODPKTSSENT:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_GOODPKTSSENT, if_stats.good_pkts_sent.ll);
++          break;
++        case INTERFACE_EXCESSIVECOLLISIONS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_EXCESSIVECOLLISIONS, if_stats.excessive_collisions.ll);
++          break;
++        case INTERFACE_MCPKTSSENT:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_MCPKTSSENT, if_stats.mc_pkts_sent.ll);
++          break;
++        case INTERFACE_BRDCPKTSSENT:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_BRDCPKTSSENT, if_stats.brdc_pkts_sent.ll);
++          break;
++        case INTERFACE_UNRECOGMACCNTRRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_UNRECOGMACCNTRRCV, if_stats.unrecog_mac_cntr_rcv.ll);
++          break;
++        case INTERFACE_FCSENT:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_FCSENT, if_stats.fc_sent.ll);
++          break;
++        case INTERFACE_GOODFCRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_GOODFCRCV, if_stats.good_fc_rcv.ll);
++          break;
++        case INTERFACE_DROPEVENTS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_DROPEVENTS, if_stats.drop_events.ll);
++          break;
++        case INTERFACE_UNDERSIZEPKTS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_UNDERSIZEPKTS, if_stats.undersize_pkts.ll);
++          break;
++         case INTERFACE_FRAGMENTSPKTS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_FRAGMENTSPKTS, if_stats.fragments_pkts.ll);
++          break;
++        case INTERFACE_OVERSIZEPKTS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_OVERSIZEPKTS, if_stats.oversize_pkts.ll);
++          break;
++        case INTERFACE_JABBERPKTS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_JABBERPKTS, if_stats.jabber_pkts.ll);
++          break;
++        case INTERFACE_MACRCVRRROR:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_MACRCVRRROR, if_stats.mac_rcv_error.ll);
++          break;
++        case INTERFACE_MACRCVERROR:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_MACRCVERROR, if_stats.mac_rcv_error.ll);
++          break;
++        case INTERFACE_BADCRC:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_BADCRC, if_stats.bad_crc.ll);
++          break;
++        case INTERFACE_DRIBBLE:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_DRIBBLE, if_stats.dribble.ll);
++          break;
++        case INTERFACE_COLLISIONSSTATE:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_COLLISIONS, if_stats.collisions.ll);
++          break;
++        case INTERFACE_LATECOLLISIONS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_LATECOLLISIONS, if_stats.late_collisions.ll);
++          break;
++        case INTERFACE_DEFERREDTX:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_DEFERREDTX, if_stats.deferred_tx.ll);
++          break;
++        case INTERFACE_BADFCRCV:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_BADFCRCV, if_stats.bad_fc_rcv.ll);
++          break;
++       case INTERFACE_PORTINOVERFLOWFRAMES:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PORTINOVERFLOWFRAMES, if_stats.port_in_overflow_frames.ll);
++          break;
++        case INTERFACE_PORTOUTOVERFLOWFRAMES:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PORTOUTOVERFLOWFRAMES, if_stats.port_out_overflow_frames.ll);
++          break;
++        case INTERFACE_PORTINOVERFLOWDISCARDS:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_PORTINOVERFLOWDISCARDS,if_stats.port_in_overflow_discards.ll);
++          break;
++        case INTERFACE_INFILTERED:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_INFILTERED, if_stats.in_filtered.ll);
++          break;
++        case INTERFACE_OUTFILTERED:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_OUTFILTERED, if_stats.out_filtered.ll);
++          break;
++        case INTERFACE_MTUEXCEED:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_MTUEXCEED, if_stats.mtu_exceed.ll);
++          break;
++        case INTERFACE_INJUMBO:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_INJUMBO, if_stats.in_jumbo.ll);
++          break;
++        case INTERFACE_OUTJUMBO:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_OUTJUMBO, if_stats.out_jumbo.ll);
++          break;
++        case INTERFACE_RXPKTRATE:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_RXPKTRATE, if_stats.rx_pkt_rate.ll);
++          break;
++        case INTERFACE_RXBITRATE:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_RXBITRATE, if_stats.rx_bit_rate.ll);
++          break;
++        case INTERFACE_TXPKTRATE:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_TXPKTRATE, if_stats.tx_pkt_rate.ll);
++          break;
++        case INTERFACE_TXBITRATE:
++          smi_add_unsigned_long_attr_in_list ((*object)->attr_list,INTERFACE_TXBITRATE, if_stats.tx_bit_rate.ll);
++          break;
++#endif /* (defined HAVE_HAL) && !(defined HAVE_SWFWDR) */
++       }
++      default:
++        continue;
++    }
++  }
++  return cml_auto_ret;
++}
++int interface_get_interface_nsmMaster_featureProfile_api_runtime_attrs(SMI_OBJECT **object,
++                                struct list *attrIdlist,
++                                struct list *parents_keylist,
++                                void **nextNode,
++                                smi_filter_list* filter,
++                                int match_criteria)
++{
++  int cml_auto_ret = 0;
++  int *id = NULL;
++  struct listnode *node = NULL;
++  struct interface *ifp;
++  ifp = get_interface_ifp_node((*object)->key_list);
++  if(!ifp)
++     return NSM_API_SET_ERR_IF_NOT_EXIST;
++  struct nsm_master *nm = ifp->vr->proto;
++  if(nm == NULL)
++    return NSM_API_SET_ERR_MASTER_NOT_EXIST;
++  LIST_LOOP (attrIdlist, id, node)
++  {
++    switch (*id)
++    {
++      case INTERFACE_CURRENTPROFILE:
++           smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_CURRENTPROFILE,nm->feature_profile.cur_profile);
++        break;
++      case INTERFACE_NEWPROFILE:
++           smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_NEWPROFILE, nm->feature_profile.new_profile);
++        break;
++      default:
++        continue;
++    }
++  }
++  return cml_auto_ret;
++}
++
++#if defined HAVE_PBR
++int interface_get_interface_nsmMaster_routeMap_api_runtime_attrs(SMI_OBJECT **object,
++                                struct list *attrIdlist,
++                                struct list *parents_keylist,
++                                void **nextNode,
++                                smi_filter_list* filter,
++                                int match_criteria)
++{
++  int cml_auto_ret = 0;
++  int *id = NULL;
++  struct listnode *node = NULL;
++  struct ipi_vr *vr = ipi_vr_get_privileged (nzg);
++  struct route_map_index *index = NULL;
++  struct route_map *map = NULL;
++  map = vr->route_map_master.head;
++  if(map)
++  {
++  LIST_LOOP (attrIdlist, id, node)
++  {
++    switch (*id)
++    {
++      case INTERFACE_ROUTEMAPNAME:
++        smi_add_str_attr_in_list ((*object)->attr_list,INTERFACE_ROUTEMAPNAME, map->name);
++        break;
++      case INTERFACE_ROUTEMAPTYPE:
++        index = map->head;
++        smi_add_str_attr_in_list ((*object)->attr_list,INTERFACE_ROUTEMAPTYPE, ROUTE_MAP_TYPE_STR (index->type));
++        break;
++      case INTERFACE_ROUTEMAPPREF:
++        index = map->head;
++        smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_ROUTEMAPPREF, index->pref);
++        break;
++      default:
++        continue;
++    }
++  }
++  }
++  return cml_auto_ret;
++}
++#endif /* HAVE_PBR */
+ #endif /* HAVE_AUTO_SMI */
+bash-4.2$
+
+
+Work Around:
+~~~~~~~~~~~~~~~~~~
+bash-4.2$ git diff nsm/smi/interface_get_api.c
+diff --git a/zebos/nsm/smi/interface_get_api.c b/zebos/nsm/smi/interface_get_api.c
+index b642ba0..eb20714 100644
+--- a/zebos/nsm/smi/interface_get_api.c
++++ b/zebos/nsm/smi/interface_get_api.c
+@@ -887,12 +887,14 @@ int interface_get_interface_nsmMaster_featureProfile_api_runtime_attrs(SMI_OBJEC
+   {
+     switch (*id)
+     {
++#ifndef HAVE_SAOS
+       case INTERFACE_CURRENTPROFILE:
+            smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_CURRENTPROFILE,nm->feature_profile.cur_profile);
+         break;
+       case INTERFACE_NEWPROFILE:
+            smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_NEWPROFILE, nm->feature_profile.new_profile);
+         break;
++#endif /* HAVE_SAOS */
+       default:
+         continue;
+     }
+@@ -921,6 +923,7 @@ int interface_get_interface_nsmMaster_routeMap_api_runtime_attrs(SMI_OBJECT **ob
+   {
+     switch (*id)
+     {
++#ifndef HAVE_SAOS
+       case INTERFACE_ROUTEMAPNAME:
+         smi_add_str_attr_in_list ((*object)->attr_list,INTERFACE_ROUTEMAPNAME, map->name);
+         break;
+@@ -932,6 +935,7 @@ int interface_get_interface_nsmMaster_routeMap_api_runtime_attrs(SMI_OBJECT **ob
+         index = map->head;
+         smi_add_int_attr_in_list ((*object)->attr_list,INTERFACE_ROUTEMAPPREF, index->pref);
+         break;
++#endif /* HAVE_SAOS */
+       default:
+         continue;
+     }
+bash-4.2$

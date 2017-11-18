@@ -1,0 +1,58 @@
+rstp disable
+mstp disable
+lldp disable
+dhcp client disable
+dhcpv6 client disable
+
+Vlan create vlan 20
+Vlan add vlan 20 port 2
+Vlan create vlan 60
+Vlan add vlan 60 port 6
+Vlan create vlan 50
+Vlan add vlan 50 port 5
+Interface create ip-interface a16_10_11_2 ip 20.1.1.11/24 ip-forwarding on vlan 20
+Interface create ip-interface a16_11_12_3 ip 60.1.1.11/24 ip-forwarding on vlan 60
+Interface create ip-interface a16_11_12_4 ip 50.1.1.11/24 ip-forwarding on vlan 50
+Interface create loopback lbk ip 2.2.2.2
+
+ip route add destination 7.7.7.7/32 gateway 20.1.1.10
+ 
+bgp create as 100
+bgp neighbor add as 100 nbr 20.1.1.10 remote-as 100
+bgp neighbor add as 100 nbr 50.1.1.13 remote-as 100
+bgp neighbor add as 100 nbr 60.1.1.13 remote-as 100
+bgp allocate-label-all set as 100
+bgp address-family add as 100 afi ipv4 safi labeled-unicast
+bgp address-family add as 100 afi ipv4 safi unicast
+bgp route-reflector-client add as 100 nbr 20.1.1.10 afi ipv4 safi unicast
+bgp route-reflector-client add as 100 nbr 20.1.1.10 afi ipv4 safi labeled-unicast
+bgp next-hop-self add as 100 nbr 20.1.1.10 afi ipv4 safi unicast
+bgp next-hop-self add as 100 nbr 20.1.1.10 afi ipv4 safi labeled-unicast
+bgp next-hop-self enable as 100 nbr 20.1.1.10
+
+
+Conf t
+router bgp 100
+allocate-label all
+bgp additional-paths install
+
+neighbor 20.1.1.10 remote-as 100
+Address-family ipv4 unicast
+exit-address-family
+Address-family ipv4 labeled-unicast
+Exit-address-family
+  neighbor 20.1.1.10 next-hop-self
+
+neighbor 60.1.1.13 remote-as 100
+address-family ipv4 unicast
+exit-address-family
+Address-family ipv4 labeled-unicast
+Exit-address-family
+  neighbor 60.1.1.13 next-hop-self
+
+neighbor 50.1.1.13 remote-as 100
+address-family ipv4 unicast
+exit-address-family
+Address-family ipv4 labeled-unicast
+Exit-address-family
+  neighbor 50.1.1.13 next-hop-self

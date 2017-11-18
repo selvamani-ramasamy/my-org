@@ -1,0 +1,615 @@
+
+Initial ILM and FTN entries -- the best path is 50.1.1.13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5160#
+5160#sh mpls ilm-table
+Codes: > - installed ILM, * - selected ILM, p - stale ILM
+        K - CLI ILM,T - MPLS-TP
+
+Code  FEC                ILM-ID      In-Label    Out-Label   In-Intf   Out-Intf     Nexthop              LSP-Type
+  *   3.3.3.3/32         9           24323       24320       N/A       a16_11_12_4  50.1.1.13            LSP_DEFAULT
+  *   60.1.1.0/24        12          24322       24323       N/A       a16_11_12_4  50.1.1.13            LSP_DEFAULT
+  *   50.1.1.0/24        11          24320       24322       N/A       a16_11_12_4  50.1.1.13            LSP_DEFAULT
+  *   10.0.0.0/8         10          24324       24321       N/A       a16_11_12_4  50.1.1.13            LSP_DEFAULT
+5160#
+5160#<pvr> : 2017/10/31 16:05:00 NSM[ 1369]: pal_kernel_if_get_bw: ioctl failed Operation not supported
+5160#
+5160#sh mpls ftn-table
+ Primary FTN entry with FEC: 3.3.3.3/32, id: 1, row status: Active
+  Owner: BGP, Stale: NO, Action-type: Redirect to LSP, Exp-bits: 0x0, Incoming DSCP: none
+  Tunnel id: 0,   Protected LSP id: 0, Description: N/A
+  Primary:  Cross connect ix: 9, in intf: - in label: 0 out-segment ix: 9
+      Owner: BGP, Persistent: No, Admin Status: Down, Oper Status: Down
+       Out-segment with ix: 9, owner: BGP, Stale: NO, out intf: a16_11_12_4, out label: 24320
+    Nexthop addr: 50.1.1.13        cross connect ix: 9, op code: Push
+
+
+ Primary FTN entry with FEC: 10.0.0.0/8, id: 2, row status: Active
+  Owner: BGP, Stale: NO, Action-type: Redirect to LSP, Exp-bits: 0x0, Incoming DSCP: none
+  Tunnel id: 0,   Protected LSP id: 0, Description: N/A
+  Primary:  Cross connect ix: 10, in intf: - in label: 0 out-segment ix: 10
+      Owner: BGP, Persistent: No, Admin Status: Down, Oper Status: Down
+       Out-segment with ix: 10, owner: BGP, Stale: NO, out intf: a16_11_12_4, out label: 24321
+    Nexthop addr: 50.1.1.13        cross connect ix: 10, op code: Push
+
+
+ Primary FTN entry with FEC: 50.1.1.0/24, id: 4, row status: Active
+  Owner: BGP, Stale: NO, Action-type: Redirect to LSP, Exp-bits: 0x0, Incoming DSCP: none
+  Tunnel id: 0,   Protected LSP id: 0, Description: N/A
+  Primary:  Cross connect ix: 11, in intf: - in label: 0 out-segment ix: 11
+      Owner: BGP, Persistent: No, Admin Status: Down, Oper Status: Down
+       Out-segment with ix: 11, owner: BGP, Stale: NO, out intf: a16_11_12_4, out label: 24322
+    Nexthop addr: 50.1.1.13        cross connect ix: 11, op code: Push
+
+
+ Primary FTN entry with FEC: 60.1.1.0/24, id: 3, row status: Active
+  Owner: BGP, Stale: NO, Action-type: Redirect to LSP, Exp-bits: 0x0, Incoming DSCP: none
+  Tunnel id: 0,   Protected LSP id: 0, Description: N/A
+  Primary:  Cross connect ix: 12, in intf: - in label: 0 out-segment ix: 12
+      Owner: BGP, Persistent: No, Admin Status: Down, Oper Status: Down
+       Out-segment with ix: 12, owner: BGP, Stale: NO, out intf: a16_11_12_4, out label: 24323
+    Nexthop addr: 50.1.1.13        cross connect ix: 12, op code: Push
+
+
+bringdown the current primary path -- i.e. the best path to 50.1.1.13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5160#
+5160#!bring down the primary path
+5160#
+5160#<pvr> : 2017/10/31 16:06:35 RIB[ 1408]: ipiFib_netlink_talk():2308, dest_nl_pid = 305419896, nl = 0x104595c0
+<pvr> : 2017/10/31 16:06:35 NSM[ 1369]: Interface a16_11_12_4 changed state to admin down
+<pvr> : 2017/10/31 16:06:35 RIB[ 1408]: ipiFib_netlink_talk():2308, dest_nl_pid = 305419896, nl = 0x104595c0
+<pvr> : 2017/10/31 16:06:35 NSM[ 1369]: pal_kernel_if_get_bw: ioctl failed Operation not supported
+
+<pvr> : 2017/10/31 16:06:35 RIB[ 1408]: ipiFib_netlink_talk():2308, dest_nl_pid = 305419896, nl = 0x104595c0
+<pvr> : 2017/10/31 16:06:35 RIB[ 1408]: ipiFib_netlink_talk():2308, dest_nl_pid = 305419896, nl = 0x104595c0
+
+I3_FRR_DBG#  inside :i3_send_i3_mpls_interface_ind for vif_index:13, operstatus:2, adminstatus:2
+
+I3_FRR_DBG#  inside :i3_send_i3_mpls_interface_ind for vif_index:13, operstatus:2, adminstatus:2
+bcmHalMplsEncapTnlCreateSet: [IN] ipIntfHwIndex:6, ipAdjHwIndex:100005, label:24323, macPort:13, trunk:0, vlanId:50, srcMac:c4:83:6f:0c:e2:e1,nHopMac:c4:83:6f:1a:6c:a1, replace:1 ttlPolicy:0 fixedTtl:255, cosPolicy:1, cosMapId:2048, fixedTc:0, fixedPri:0tnlGrp:1048579 tunlGrpHwId:0 isPrimary:0 primaryHWId 1 drop 1
+bcmHalMplsEncapTnlCreateSet: [IN] ipIntfHwIndex:7, ipAdjHwIndex:100010, label:24322, macPort:13, trunk:0, vlanId:50, srcMac:c4:83:6f:0c:e2:e1,nHopMac:c4:83:6f:1a:6c:a1, replace:1 ttlPolicy:0 fixedTtl:255, cosPolicy:1, cosMapId:2048, fixedTc:0, fixedPri:0tnlGrp:1048580 tunlGrpHwId:0 isPrimary:0 primaryHWId 1 drop 1
+bcmHalMplsEncapTnlCreateSet: [IN] ipIntfHwIndex:5, ipAdjHwIndex:100008, label:24321, macPort:13, trunk:0, vlanId:50, srcMac:c4:83:6f:0c:e2:e1,nHopMac:c4:83:6f:1a:6c:a1, replace:1 ttlPolicy:0 fixedTtl:255, cosPolicy:1, cosMapId:2048, fixedTc:0, fixedPri:0tnlGrp:1048578 tunlGrpHwId:0 isPrimary:0 primaryHWId 1 drop 1
+bcmHalMplsEncapTnlCreateSet: [IN] ipIntfHwIndex:4, ipAdjHwIndex:100007, label:24320, macPort:13, trunk:0, vlanId:50, srcMac:c4:83:6f:0c:e2:e1,nHopMac:c4:83:6f:1a:6c:a1, replace:1 ttlPolicy:0 fixedTtl:255, cosPolicy:1, cosMapId:2048, fixedTc:0, fixedPri:0tnlGrp:1048577 tunlGrpHwId:0 isPrimary:0 primaryHWId 1 drop 1
+
+5160#
+5160#sh mpls ilm-table
+Codes: > - installed ILM, * - selected ILM, p - stale ILM
+        K - CLI ILM,T - MPLS-TP
+
+Code  FEC                ILM-ID      In-Label    Out-Label   In-Intf   Out-Intf     Nexthop              LSP-Type
+  *   3.3.3.3/32         9           24323       24320       N/A       a16_11_12_4  50.1.1.13            LSP_DEFAULT
+  *   60.1.1.0/24        12          24322       24323       N/A       a16_11_12_4  50.1.1.13            LSP_DEFAULT
+  *   50.1.1.0/24        11          24320       24322       N/A       a16_11_12_4  50.1.1.13            LSP_DEFAULT
+  *   10.0.0.0/8         10          24324       24321       N/A       a16_11_12_4  50.1.1.13            LSP_DEFAULT
+5160#
+5160#<pvr> : 2017/10/31 16:07:00 BGP[ 1421]: CPM Message Header
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]: ILM IPv4 Add
+Tue Oct 31 16:07:00 2017 Mpg:         _mpgIngrTnlDelete :  1854, Object:         MPLS Tunnel, Severity:      ERROR, Index:   570425345 Entry VIF not present. VIF : 0
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  VR ID: 0
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  Owner: BGP
+<pvr> : 2017/10/31 16:07:00 NSM[ 1369]: pal_kernel_if_get_bw: ioctl failed Operation not supported
+
+<pvr> : 2017/10/31 16:07:00 RIB[ 1408]: ipiFib_netlink_talk():2308, dest_nl_pid = 305419896, nl = 0x104595c0
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:   Peer Address: 60.1.1.13
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  Message type: 122
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:   Frr Peer Address: 0.0.0.0
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  Message length: 76
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:   Prefix: 3.3.3.3/32
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  Message ID: 0x00000000
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:   VRF Id: 0
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  In index: 0
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  In label: 24321
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]: CPM Message Header
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  ILM index:0
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  VR ID: 0
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  ILM message_id:51
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  Out Label: 24320
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  Message type: 122
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  Out index: 12
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  Message length: 66
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  NH addr: 60.1.1.13
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  Message ID: 0x00000000
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  # of pops: 1
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]: CPM Message Header
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  Opcode: Swap
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  VR ID: 0
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  LSP ID: 0 0 0 0 0 0
+Tue Oct 31 16:07:00 2017 Mpg:         _mpgIngrTnlDelete :  1854, Object:         MPLS Tunnel, Severity:      ERROR, Index:   570425346 Entry VIF not present. VIF : 0
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  FEC: 3.3.3.3
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  Message type: 122
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  QOS resource ID: 0
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  Message length: 76
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  Primary ILM entry: 0
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  Message ID: 0x00000000
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]: Created ILM. ILM Index (13)
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]: CPM Message Header
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]: FTN IPv4 Delete
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  VR ID: 0
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  FEC: 3.3.3.3/32
+Tue Oct 31 16:07:00 2017 Mpg:         _mpgIngrTnlDelete :  1854, Object:         MPLS Tunnel, Severity:      ERROR, Index:   570425350 Entry VIF not present. VIF : 0
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  Message type: 122
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  FTN index: 1
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  Message length: 66
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  FTN message_id:52
+<pvr> : 2017/10/31 16:07:00 BGP[ 1421]:  Message ID: 0x00000000
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]: ILM IPv4 Fast Delete
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  In index: 0
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  In label: 24323
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  ILM index:0
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  ILM message_id:53
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]: FTN IPv4 Add
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:  Owner: BGP
+<pvr> : 2017/10/31 16:07:00 MPLSD[ 1429]:   Peer Address: 60.1.1.13
+Tue Oct 31 16:07:00 2017 Mpg:         _mpgIngrTnlDelete :  1854, Object:         MPLS Tunnel, Severity:      ERROR, Index:   570425347 Entry VIF not present. VIF : 0
+bcmHalMplsEncapTnlCreateSet: [IN] ipIntfHwIndex:0, ipAdjHwIndex:0, label:24320, macPort:15, trunk:0, vlanId:60, srcMac:c4:83:6f:0c:e2:e1,nHopMac:c4:83:6f:1a:6c:a1, replace:0 ttlPolicy:0 fixedTtl:255, cosPolicy:1, cosMapId:2048, fixedTc:0, fixedPri:0tnlGrp:1048577 tunlGrpHwId:1 isPrimary:0 primaryHWId 1 drop 1
+bcmHalMplsEncapTnlCreateSet: [IN] ipIntfHwIndex:0, ipAdjHwIndex:0, label:24321, macPort:15, trunk:0, vlanId:60, srcMac:c4:83:6f:0c:e2:e1,nHopMac:c4:83:6f:1a:6c:a1, replace:0 ttlPolicy:0 fixedTtl:255, cosPolicy:1, cosMapId:2048, fixedTc:0, fixedPri:0tnlGrp:1048578 tunlGrpHwId:2 isPrimary:0 primaryHWId 1 drop 1
+bcmHalMplsEncapTnlCreateSet: [IN] ipIntfHwIndex:0, ipAdjHwIndex:0, label:24323, macPort:15, trunk:0, vlanId:60, srcMac:c4:83:6f:0c:e2:e1,nHopMac:c4:83:6f:1a:6c:a1, replace:0 ttlPolicy:0 fixedTtl:255, cosPolicy:1, cosMapId:2048, fixedTc:0, fixedPri:0tnlGrp:1048579 tunlGrpHwId:3 isPrimary:0 primaryHWId 1 drop 1
+bcmHalMplsEncapTnlCreateSet: [IN] ipIntfHwIndex:6, ipAdjHwIndex:100011, label:24323, macPort:15, trunk:0, vlanId:60, srcMac:c4:83:6f:0c:e2:e1,nHopMac:c4:83:6f:1a:6c:a1, replace:1 ttlPolicy:0 fixedTtl:255, cosPolicy:1, cosMapId:2048, fixedTc:0, fixedPri:0tnlGrp:1048579 tunlGrpHwId:0 isPrimary:0 primaryHWId 1 drop 0
+bcmHalMplsEncapTnlCreateSet: [IN] ipIntfHwIndex:5, ipAdjHwIndex:100009, label:24321, macPort:15, trunk:0, vlanId:60, srcMac:c4:83:6f:0c:e2:e1,nHopMac:c4:83:6f:1a:6c:a1, replace:1 ttlPolicy:0 fixedTtl:255, cosPolicy:1, cosMapId:2048, fixedTc:0, fixedPri:0tnlGrp:1048578 tunlGrpHwId:0 isPrimary:0 primaryHWId 1 drop 0
+bcmHalMplsEncapTnlCreateSet: [IN] ipIntfHwIndex:4, ipAdjHwIndex:100007, label:24320, macPort:15, trunk:0, vlanId:60, srcMac:c4:83:6f:0c:e2:e1,nHopMac:c4:83:6f:1a:6c:a1, replace:1 ttlPolicy:0 fixedTtl:255, cosPolicy:1, cosMapId:2048, fixedTc:0, fixedPri:0tnlGrp:1048577 tunlGrpHwId:0 isPrimary:0 primaryHWId 1 drop 0
+<pvr> : 2017/10/31 16:07:04 BGP[ 1421]: CPM Message Header
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:   Frr Peer Address: 0.0.0.0
+<pvr> : 2017/10/31 16:07:04 BGP[ 1421]:  VR ID: 0
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:   Prefix: 3.3.3.3/32
+<pvr> : 2017/10/31 16:07:04 BGP[ 1421]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:   VRF Id: 0
+<pvr> : 2017/10/31 16:07:04 BGP[ 1421]:  Message type: 122
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:04 BGP[ 1421]:  Message length: 76
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  FEC: 3.3.3.3/32
+<pvr> : 2017/10/31 16:07:04 BGP[ 1421]:  Message ID: 0x00000000
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  FTN index: 0
+<pvr> : 2017/10/31 16:07:04 BGP[ 1421]: CPM Message Header
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  FTN message_id:54
+<pvr> : 2017/10/31 16:07:04 BGP[ 1421]:  VR ID: 0
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  NH addr: 60.1.1.13
+<pvr> : 2017/10/31 16:07:04 BGP[ 1421]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  Out Label: 24320
+<pvr> : 2017/10/31 16:07:04 BGP[ 1421]:  Message type: 122
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  Out index: 12
+<pvr> : 2017/10/31 16:07:04 BGP[ 1421]:  Message length: 66
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  LSP ID: 0 0 0 0 0 0
+<pvr> : 2017/10/31 16:07:04 BGP[ 1421]:  Message ID: 0x00000000
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  Exp bits: 0
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  LSP-Type: Primary
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  Action type: Redirect LSP
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  IGP-Shortcut disabled
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  LSP Metric: 0
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  Opcode: Push
+<pvr> : 2017/10/31 16:07:04 MPLSD[ 1429]:  Tunnel id: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Protected LSP id: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  bypass_ftn_ix: 0
+
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]: ILM IPv4 Add
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Owner: BGP
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:   Peer Address: 60.1.1.13
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:   Frr Peer Address: 0.0.0.0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:   Prefix: 10.0.0.0/8
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:   VRF Id: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  In index: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  In label: 24323
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  ILM index:0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  ILM message_id:55
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Out Label: 24321
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Out index: 12
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  NH addr: 60.1.1.13
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  # of pops: 1
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Opcode: Swap
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  LSP ID: 0 0 0 0 0 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  FEC: 10.0.0.0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  QOS resource ID: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Primary ILM entry: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]: Created ILM. ILM Index (14)
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]: FTN IPv4 Delete
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  FEC: 10.0.0.0/8
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  FTN index: 2
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  FTN message_id:56
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]: ILM IPv4 Fast Delete
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  In index: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  In label: 24324
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  ILM index:0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  ILM message_id:57
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]: FTN IPv4 Add
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Owner: BGP
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:   Peer Address: 60.1.1.13
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:   Frr Peer Address: 0.0.0.0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:   Prefix: 10.0.0.0/8
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:   VRF Id: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  FEC: 10.0.0.0/8
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  FTN index: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  FTN message_id:58
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  NH addr: 60.1.1.13
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Out Label: 24321
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Out index: 12
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  LSP ID: 0 0 0 0 0 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Exp bits: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  LSP-Type: Primary
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Action type: Redirect LSP
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  IGP-Shortcut disabled
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  LSP Metric: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Opcode: Push
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Tunnel id: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  Protected LSP id: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  bypass_ftn_ix: 0
+
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]: FTN IPv4 Delete
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  FEC: 50.1.1.0/24
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  FTN index: 4
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  FTN message_id:59
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]: ILM IPv4 Fast Delete
+<pvr> : 2017/10/31 16:07:08 MPLSD[ 1429]:  In index: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  In label: 24320
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  ILM index:0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  ILM message_id:60
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]: ILM IPv4 Add
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Owner: BGP
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:   Peer Address: 60.1.1.13
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:   Frr Peer Address: 0.0.0.0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:   Prefix: 60.1.1.0/24
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:   VRF Id: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  In index: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  In label: 24320
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  ILM index:0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  ILM message_id:61
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Out Label: 24323
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Out index: 12
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  NH addr: 60.1.1.13
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  # of pops: 1
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Opcode: Swap
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  LSP ID: 0 0 0 0 0 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  FEC: 60.1.1.0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  QOS resource ID: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Primary ILM entry: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]: Created ILM. ILM Index (15)
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]: FTN IPv4 Delete
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  FEC: 60.1.1.0/24
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  FTN index: 3
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  FTN message_id:62
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]: ILM IPv4 Fast Delete
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  In index: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  In label: 24322
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  ILM index:0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  ILM message_id:63
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]: FTN IPv4 Add
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Owner: BGP
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:   Peer Address: 60.1.1.13
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:   Frr Peer Address: 0.0.0.0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:   Prefix: 60.1.1.0/24
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:   VRF Id: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  VRF ID: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  FEC: 60.1.1.0/24
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  FTN index: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  FTN message_id:64
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  NH addr: 60.1.1.13
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Out Label: 24323
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Out index: 12
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  LSP ID: 0 0 0 0 0 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Exp bits: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  LSP-Type: Primary
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Action type: Redirect LSP
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  IGP-Shortcut disabled
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  LSP Metric: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Opcode: Push
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Tunnel id: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  Protected LSP id: 0
+<pvr> : 2017/10/31 16:07:12 MPLSD[ 1429]:  bypass_ftn_ix: 0
+
+<pvr> : 2017/10/31 16:07:14 NSM[ 1369]: pal_kernel_if_get_bw: ioctl failed Operation not supported
+
+5160#
+5160#
+5160#sh mpls ilm-table
+Codes: > - installed ILM, * - selected ILM, p - stale ILM
+        K - CLI ILM,T - MPLS-TP
+
+Code  FEC                ILM-ID      In-Label    Out-Label   In-Intf   Out-Intf     Nexthop              LSP-Type
+  *   3.3.3.3/32         13          24321       24320       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   60.1.1.0/24        15          24320       24323       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   10.0.0.0/8         14          24323       24321       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+5160#
+5160#!sh: line 0: cd: /mnt/image@: No such file or directory
+dow
+5160#!done with port down event
+5160#!done with port down event
+5160#!done with port down event
+5160#!done with port down event
+5160#
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Primary path down event handled properly and new primary path (60.1.1.13) is successfully calculated and installed in mplsd
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5160#
+5160#sh mpls ilm-table
+Codes: > - installed ILM, * - selected ILM, p - stale ILM
+        K - CLI ILM,T - MPLS-TP
+
+Code  FEC                ILM-ID      In-Label    Out-Label   In-Intf   Out-Intf     Nexthop              LSP-Type
+  *   3.3.3.3/32         13          24321       24320       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   60.1.1.0/24        15          24320       24323       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   10.0.0.0/8         14          24323       24321       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+5160#
+5160#
+5160#<pvr> : 2017/10/31 16:07:44 BGP[ 1421]: Fault:"BGP Peer State change update" RAISED Gr:BGP Id:5 Len:264 Ptr:0x10a4ed70 Sev:UNKNOWN Rec:NONE      File:smi/smi_bgp_fm.c Line:137 Cnt:2
+
+5160#
+5160#
+5160#<pvr> : 2017/10/31 16:07:49 BGP[ 1421]: Fault:"BGP Peer State change update" RAISED Gr:BGP Id:5 Len:264 Ptr:0x10ac0e70 Sev:UNKNOWN Rec:NONE      File:smi/smi_bgp_fm.c Line:137 Cnt:3
+<pvr> : 2017/10/31 16:07:49 BGP[ 1421]: Fault:"BGP Peer State change update" RAISED Gr:BGP Id:5 Len:264 Ptr:0x10ac6210 Sev:UNKNOWN Rec:NONE      File:smi/smi_bgp_fm.c Line:137 Cnt:2
+
+5160#
+5160#<pvr> : 2017/10/31 16:08:15 NSM[ 1369]: pal_kernel_if_get_bw: ioctl failed Operation not supported
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Now bring back the old primary path (50.1.1.13)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5160#
+5160#
+5160#!bring up the old primary back
+5160#!bring up the old primary back
+5160#
+5160#
+5160#<pvr> : 2017/10/31 16:08:42 NSM[ 1369]: pal_kernel_if_get_bw: ioctl failed Operation not supported
+
+<pvr> : 2017/10/31 16:08:42 RIB[ 1408]: ipiFib_netlink_talk():2308, dest_nl_pid = 305419896, nl = 0x104595c0
+<pvr> : 2017/10/31 16:08:42 MPLSD[ 1429]: UPDATE: Priority bandwidth on a16_11_12_4
+<pvr> : 2017/10/31 16:08:42 NSM[ 1369]: pal_kernel_if_get_bw: ioctl failed Operation not supported
+
+
+I3_FRR_DBG#  inside :i3_send_i3_mpls_interface_ind for vif_index:13, operstatus:1, adminstatus:1
+
+I3_FRR_DBG#  inside :i3_send_i3_mpls_interface_ind for vif_index:13, operstatus:1, adminstatus:1
+
+5160#
+5160#
+5160#<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]: ILM IPv4 Add
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Owner: BGP
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:   Peer Address: 60.1.1.13
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:   Frr Peer Address: 0.0.0.0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:   Prefix: 50.1.1.0/24
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:   VRF Id: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  In index: 0
+<pvr> : 2017/10/31 16:08:54 BGP[ 1421]: CPM Message Header
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  In label: 24322
+<pvr> : 2017/10/31 16:08:54 BGP[ 1421]:  VR ID: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  ILM index:0
+<pvr> : 2017/10/31 16:08:54 BGP[ 1421]:  VRF ID: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  ILM message_id:66
+<pvr> : 2017/10/31 16:08:54 BGP[ 1421]:  Message type: 122
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Out Label: 24322
+<pvr> : 2017/10/31 16:08:54 BGP[ 1421]:  Message length: 76
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Out index: 12
+<pvr> : 2017/10/31 16:08:54 BGP[ 1421]:  Message ID: 0x00000000
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  NH addr: 60.1.1.13
+bcmHalMplsEncapTnlCreateSet: [IN] ipIntfHwIndex:0, ipAdjHwIndex:0, label:24322, macPort:15, trunk:0, vlanId:60, srcMac:c4:83:6f:0c:e2:e1,nHopMac:c4:83:6f:1a:6c:a1, replace:0 ttlPolicy:0 fixedTtl:255, cosPolicy:1, cosMapId:2048, fixedTc:0, fixedPri:0tnlGrp:1048580 tunlGrpHwId:0 isPrimary:0 primaryHWId 1 drop 0
+<pvr> : 2017/10/31 16:08:54 BGP[ 1421]: CPM Message Header
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  # of pops: 1
+<pvr> : 2017/10/31 16:08:54 BGP[ 1421]:  VR ID: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Opcode: Swap
+<pvr> : 2017/10/31 16:08:54 BGP[ 1421]:  VRF ID: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  LSP ID: 0 0 0 0 0 0
+<pvr> : 2017/10/31 16:08:54 BGP[ 1421]:  Message type: 122
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  FEC: 50.1.1.0
+<pvr> : 2017/10/31 16:08:54 BGP[ 1421]:  Message length: 66
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  QOS resource ID: 0
+<pvr> : 2017/10/31 16:08:54 BGP[ 1421]:  Message ID: 0x00000000
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Primary ILM entry: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]: Created ILM. ILM Index (16)
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]: FTN IPv4 Add
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Owner: BGP
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:   Peer Address: 60.1.1.13
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:   Frr Peer Address: 0.0.0.0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:   Prefix: 50.1.1.0/24
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:   VRF Id: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  VRF ID: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  FEC: 50.1.1.0/24
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  FTN index: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  FTN message_id:67
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  NH addr: 60.1.1.13
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Out Label: 24322
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Out index: 12
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  LSP ID: 0 0 0 0 0 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Exp bits: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  LSP-Type: Primary
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Action type: Redirect LSP
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  IGP-Shortcut disabled
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  LSP Metric: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Opcode: Push
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Tunnel id: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  Protected LSP id: 0
+<pvr> : 2017/10/31 16:08:54 MPLSD[ 1429]:  bypass_ftn_ix: 0
+
+
+5160#<pvr> : 2017/10/31 16:09:00 NSM[ 1369]: pal_kernel_if_get_bw: ioctl failed Operation not supported
+
+
+5160#
+5160#
+5160#
+5160#
+5160#
+5160#
+5160#
+5160#
+5160#
+5160#sh mpls ilm-table
+Codes: > - installed ILM, * - selected ILM, p - stale ILM
+        K - CLI ILM,T - MPLS-TP
+
+Code  FEC                ILM-ID      In-Label    Out-Label   In-Intf   Out-Intf     Nexthop              LSP-Type
+  *   3.3.3.3/32         13          24321       24320       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   60.1.1.0/24        15          24320       24323       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   10.0.0.0/8         14          24323       24321       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   50.1.1.0/24        16          24322       24322       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+5160#
+5160#
+5160#
+5160#mpls ft
+5160#sh mpls ftn-table
+ Primary FTN entry with FEC: 3.3.3.3/32, id: 1, row status: Active
+  Owner: BGP, Stale: NO, Action-type: Redirect to LSP, Exp-bits: 0x0, Incoming DSCP: none
+  Tunnel id: 0,   Protected LSP id: 0, Description: N/A
+  Primary:  Cross connect ix: 13, in intf: - in label: 0 out-segment ix: 13
+      Owner: BGP, Persistent: No, Admin Status: Down, Oper Status: Down
+       Out-segment with ix: 13, owner: BGP, Stale: NO, out intf: a16_11_12_3, out label: 24320
+    Nexthop addr: 60.1.1.13        cross connect ix: 13, op code: Push
+
+
+ Primary FTN entry with FEC: 10.0.0.0/8, id: 2, row status: Active
+  Owner: BGP, Stale: NO, Action-type: Redirect to LSP, Exp-bits: 0x0, Incoming DSCP: none
+  Tunnel id: 0,   Protected LSP id: 0, Description: N/A
+  Primary:  Cross connect ix: 14, in intf: - in label: 0 out-segment ix: 14
+      Owner: BGP, Persistent: No, Admin Status: Down, Oper Status: Down
+       Out-segment with ix: 14, owner: BGP, Stale: NO, out intf: a16_11_12_3, out label: 24321
+    Nexthop addr: 60.1.1.13        cross connect ix: 14, op code: Push
+
+
+ Primary FTN entry with FEC: 50.1.1.0/24, id: 4, row status: Active
+  Owner: BGP, Stale: NO, Action-type: Redirect to LSP, Exp-bits: 0x0, Incoming DSCP: none
+  Tunnel id: 0,   Protected LSP id: 0, Description: N/A
+  Primary:  Cross connect ix: 16, in intf: - in label: 0 out-segment ix: 16
+      Owner: BGP, Persistent: No, Admin Status: Down, Oper Status: Down
+       Out-segment with ix: 16, owner: BGP, Stale: NO, out intf: a16_11_12_3, out label: 24322
+    Nexthop addr: 60.1.1.13        cross connect ix: 16, op code: Push
+
+
+ Primary FTN entry with FEC: 60.1.1.0/24, id: 3, row status: Active
+  Owner: BGP, Stale: NO, Action-type: Redirect to LSP, Exp-bits: 0x0, Incoming DSCP: none
+  Tunnel id: 0,   Protected LSP id: 0, Description: N/A
+  Primary:  Cross connect ix: 15, in intf: - in label: 0 out-segment ix: 15
+      Owner: BGP, Persistent: No, Admin Status: Down, Oper Status: Down
+       Out-segment with ix: 15, owner: BGP, Stale: NO, out intf: a16_11_12_3, out label: 24323
+    Nexthop addr: 60.1.1.13        cross connect ix: 15, op code: Push
+
+
+5160#<pvr> : 2017/10/31 16:09:34 BGP[ 1421]: Fault:"BGP Peer State change update" RAISED Gr:BGP Id:5 Len:264 Ptr:0x10acb7c0 Sev:UNKNOWN Rec:NONE      File:smi/smi_bgp_fm.c Line:137 Cnt:2
+
+5160#
+5160#
+5160#
+5160#
+5160#
+5160#<pvr> : 2017/10/31 16:09:37 BGP[ 1421]: [SOCK CB] Could not find peer for FD - 16 (error:134)
+<pvr> : 2017/10/31 16:09:37 BGP[ 1421]: Fault:"BGP Peer State change update" RAISED Gr:BGP Id:5 Len:264 Ptr:0x10ac6210 Sev:UNKNOWN Rec:NONE      File:smi/smi_bgp_fm.c Line:137 Cnt:3
+
+5160#
+5160#
+5160#
+5160#
+5160#<pvr> : 2017/10/31 16:09:43 NSM[ 1369]: pal_kernel_if_get_bw: ioctl failed Operation not supported
+
+
+5160#!nothing is changed yet
+5160#!nothing is updated yet
+5160#
+5160#
+5160#
+5160#
+5160#
+5160#
+5160#sh mpls ilm-table
+Codes: > - installed ILM, * - selected ILM, p - stale ILM
+        K - CLI ILM,T - MPLS-TP
+
+Code  FEC                ILM-ID      In-Label    Out-Label   In-Intf   Out-Intf     Nexthop              LSP-Type
+  *   3.3.3.3/32         13          24321       24320       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   60.1.1.0/24        15          24320       24323       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   10.0.0.0/8         14          24323       24321       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   50.1.1.0/24        16          24322       24322       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+5160#
+5160#
+5160#
+5160#
+5160#
+5160#<pvr> : 2017/10/31 16:10:21 NSM[ 1369]: pal_kernel_if_get_bw: ioctl failed Operation not supported
+
+
+5160#
+5160#
+5160#
+5160#
+5160#!nothing is updated yet
+5160#!it should 50.1.1.13
+5160#
+5160#
+5160#!it should 50.1.1.13
+5160#
+5160#!it should 50.1.1.13
+5160#
+5160#
+5160#<pvr> : 2017/10/31 16:11:20 BGP[ 1421]: Fault:"BGP Peer State change update" RAISED Gr:BGP Id:5 Len:264 Ptr:0x10acb7c0 Sev:UNKNOWN Rec:NONE      File:smi/smi_bgp_fm.c Line:137 Cnt:3
+<pvr> : 2017/10/31 16:11:22 NSM[ 1369]: pal_kernel_if_get_bw: ioctl failed Operation not supported
+
+
+5160#
+5160#
+5160#sh mpls ftn-table
+ Primary FTN entry with FEC: 3.3.3.3/32, id: 1, row status: Active
+  Owner: BGP, Stale: NO, Action-type: Redirect to LSP, Exp-bits: 0x0, Incoming DSCP: none
+  Tunnel id: 0,   Protected LSP id: 0, Description: N/A
+  Primary:  Cross connect ix: 13, in intf: - in label: 0 out-segment ix: 13
+      Owner: BGP, Persistent: No, Admin Status: Down, Oper Status: Down
+       Out-segment with ix: 13, owner: BGP, Stale: NO, out intf: a16_11_12_3, out label: 24320
+    Nexthop addr: 60.1.1.13        cross connect ix: 13, op code: Push
+
+
+ Primary FTN entry with FEC: 10.0.0.0/8, id: 2, row status: Active
+  Owner: BGP, Stale: NO, Action-type: Redirect to LSP, Exp-bits: 0x0, Incoming DSCP: none
+  Tunnel id: 0,   Protected LSP id: 0, Description: N/A
+  Primary:  Cross connect ix: 14, in intf: - in label: 0 out-segment ix: 14
+      Owner: BGP, Persistent: No, Admin Status: Down, Oper Status: Down
+       Out-segment with ix: 14, owner: BGP, Stale: NO, out intf: a16_11_12_3, out label: 24321
+    Nexthop addr: 60.1.1.13        cross connect ix: 14, op code: Push
+
+
+ Primary FTN entry with FEC: 50.1.1.0/24, id: 4, row status: Active
+  Owner: BGP, Stale: NO, Action-type: Redirect to LSP, Exp-bits: 0x0, Incoming DSCP: none
+  Tunnel id: 0,   Protected LSP id: 0, Description: N/A
+  Primary:  Cross connect ix: 16, in intf: - in label: 0 out-segment ix: 16
+      Owner: BGP, Persistent: No, Admin Status: Down, Oper Status: Down
+       Out-segment with ix: 16, owner: BGP, Stale: NO, out intf: a16_11_12_3, out label: 24322
+    Nexthop addr: 60.1.1.13        cross connect ix: 16, op code: Push
+
+
+ Primary FTN entry with FEC: 60.1.1.0/24, id: 3, row status: Active
+  Owner: BGP, Stale: NO, Action-type: Redirect to LSP, Exp-bits: 0x0, Incoming DSCP: none
+  Tunnel id: 0,   Protected LSP id: 0, Description: N/A
+  Primary:  Cross connect ix: 15, in intf: - in label: 0 out-segment ix: 15
+      Owner: BGP, Persistent: No, Admin Status: Down, Oper Status: Down
+       Out-segment with ix: 15, owner: BGP, Stale: NO, out intf: a16_11_12_3, out label: 24323
+    Nexthop addr: 60.1.1.13        cross connect ix: 15, op code: Push
+
+
+5160#
+5160#
+5160#sh mpls ilm-table
+Codes: > - installed ILM, * - selected ILM, p - stale ILM
+        K - CLI ILM,T - MPLS-TP
+
+Code  FEC                ILM-ID      In-Label    Out-Label   In-Intf   Out-Intf     Nexthop              LSP-Type
+  *   3.3.3.3/32         13          24321       24320       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   60.1.1.0/24        15          24320       24323       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   10.0.0.0/8         14          24323       24321       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+  *   50.1.1.0/24        16          24322       24322       N/A       a16_11_12_3  60.1.1.13            LSP_DEFAULT
+5160#
+5160#
+5160#
+5160#
+5160#
+5160#
+5160#<pvr> : 2017/10/31 16:11:59 NSM[ 1369]: pal_kernel_if_get_bw: ioctl failed Operation not supported
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ILM is not deleted.  But the best patch calculated is not correct.  When previous best path comes up, it needs to move back to 50.1.1.13.
+But the FTN and ILM add are sent for 60.1.1.13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``

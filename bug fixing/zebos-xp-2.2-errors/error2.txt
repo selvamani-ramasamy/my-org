@@ -1,0 +1,125 @@
+-I../lib/smi/client/smi_auto_oamlps -I../lib/smi/client/smi_auto_rsvp -I../lib/smi/client/smi_auto_mrib4 -I../lib/smi/client/smi_auto_ldp -I../lib/smi/client/smi_auto_pbrport -I../lib/smi/client/smi_auto_oambfd -I../lib/smi/client/smi_auto_vpls -I../lib/smi/client/smi_auto_lmp -I../lib/smi/client/smi_auto_vrrp -I../lib/smi/client/smi_auto_bridge -I../lib/smi/client/smi_auto_mplsexp -I../lib/smi/client/smi_auto_acl -I../lib/smi/client/smi_auto_vr -I../lib/smi/client/smi_auto_isis -I../lib/smi/client/smi_auto_sr -I../lib/smi/client/smi_auto_oamrps -I../lib/smi/client/smi_auto_plist -I../lib/smi/client/smi_auto_keychain -I../lib/smi/client/smi_auto_qos -I../lib/smi/client/smi_auto_switchportinterface -I../lib/smi/client/smi_auto_mldsnooping -I../lib/smi/client/smi_auto_dhcpc -I../lib/smi/client/smi_auto_ospf -I../lib/smi/client/smi_auto_oammplstp -I../lib/smi/client/smi_auto_ospfv3 -I../lib/smi/client/smi_auto_mstp -I../lib/smi/client/smi_auto_interface -I../lib/smi/client/smi_auto_mplsbfd -I../lib/smi/client/smi_auto_mplsinterface -I../lib/smi/client/smi_auto_mpls -I../lib/smi/client/smi_auto_gmpls -I../lib/smi/smi -I../lib/oam -I../lib/oam/lps -o ../platform/linux/obj/lib/smi//plist_get_api.o smi//plist_get_api.c
+smi//plist_get_api.c: In function 'plist_get_plist_prefixMaster_ipPrefix_api_runtime_attrs':
+smi//plist_get_api.c:122:12: error: 'PLIST_STARTSEQNO' undeclared (first use in this function)
+       case PLIST_STARTSEQNO:
+            ^
+smi//plist_get_api.c:122:12: note: each undeclared identifier is reported only once for each function it appears in
+smi//plist_get_api.c:125:12: error: 'PLIST_ENDSEQNO' undeclared (first use in this function)
+       case PLIST_ENDSEQNO:
+            ^
+smi//plist_get_api.c: In function 'plist_get_plist_prefixMaster6_ipv6Prefix_api_runtime_attrs':
+smi//plist_get_api.c:211:12: error: 'PLIST_STARTSEQNO6' undeclared (first use in this function)
+       case PLIST_STARTSEQNO6:
+            ^
+smi//plist_get_api.c:214:12: error: 'PLIST_ENDSEQNO6' undeclared (first use in this function)
+       case PLIST_ENDSEQNO6:
+            ^
+make[3]: *** [../platform/linux/obj/lib/smi//plist_get_api.o] Error 1
+make[2]: *** [../../platform/linux/obj/lib.a] Error 2
+make[1]: *** [ribd] Error 2
+/localdata/project/ipi-daemons-integration/packages-saos-sds/zebos/zebos:
+
+Fail: ./cgo TARG=saos-sds zebos V=1
+
+bash-4.2$
+
+bash-4.2$ git diff HEAD^ HEAD ./zebos/platform/linux/cml/infomodel/mo_plist.xml
+diff --git a/zebos/platform/linux/cml/infomodel/mo_plist.xml b/zebos/platform/linux/cml/infomodel/mo_plist.xml
+index 02d5fc7..f800f01 100644
+--- a/zebos/platform/linux/cml/infomodel/mo_plist.xml
++++ b/zebos/platform/linux/cml/infomodel/mo_plist.xml
+@@ -6,6 +6,7 @@ cml:noNamespaceSchemaLocation="cml_data_model.xsd">
+     <belongs-to>ZebOS</belongs-to>
+     <import>cml_data_types</import>
+     <revisions>
++      <revision date="2017-11-09" num="2" desc="Added get api changes"/>
+       <revision date="2016-10-20" num="1" desc="Initial version of plist datamodel"/>
+     </revisions>
+     <include>vr</include>
+@@ -76,6 +77,18 @@ cml:noNamespaceSchemaLocation="cml_data_model.xsd">
+         <category>CML_RUNTIME</category>
+       </attr>
+
++      <attr>
++        <name>startSeqNo</name>
++        <type>CML_INT32_T</type>
++        <category>CML_RUNTIME</category>
++      </attr>
++
++      <attr>
++        <name>endSeqNo</name>
++        <type>CML_INT32_T</type>
++        <category>CML_RUNTIME</category>
++      </attr>
++
+       <?ignore struct="struct prefix_list_entry" ?>
+       <objectlist name="ipPrefixEntry" desc="Each prefix-list's entry">
+         <implicit_delete>ipPrefix</implicit_delete>
+@@ -251,6 +264,20 @@ cml:noNamespaceSchemaLocation="cml_data_model.xsd">
+         <category>CML_RUNTIME</category>
+       </attr>
+
++      <attr>
++        <name>startSeqNo6</name>
++        <type>CML_INT32_T</type>
++        <category>CML_RUNTIME</category>
++      </attr>
++
++      <attr>
++        <name>endSeqNo6</name>
++        <type>CML_INT32_T</type>
++        <category>CML_RUNTIME</category>
++      </attr>
++
++
++
+       <?ignore struct="struct prefix_list_entry" ?>
+       <objectlist name="ipv6PrefixEntry" desc="Each prefix-list's entry">
+         <implicit_delete>ipv6Prefix</implicit_delete>
+@@ -535,6 +562,7 @@ cml:noNamespaceSchemaLocation="cml_data_model.xsd">
+
+
+   <smi-server-modules>OSPF,OSPFV3,BGP,ISIS,IMI</smi-server-modules>
++  <smi-show-modules>IMI</smi-show-modules>
+   <protocol-api-header-file>plist_smi_wrap.h,plist_get_api.h</protocol-api-header-file>
+
+   <operation name = "objectUpdate">
+bash-4.2$
+
+
+bash-4.2$ git diff lib/smi/plist_get_api.c
+diff --git a/zebos/lib/smi/plist_get_api.c b/zebos/lib/smi/plist_get_api.c
+index 831730a..34123f5 100644
+--- a/zebos/lib/smi/plist_get_api.c
++++ b/zebos/lib/smi/plist_get_api.c
+@@ -119,12 +119,14 @@ int plist_get_plist_prefixMaster_ipPrefix_api_runtime_attrs(SMI_OBJECT **object,
+       case PLIST_RANGECOUNT:
+         smi_add_int_attr_in_list ((*object)->attr_list,PLIST_RANGECOUNT, plist->rangecount);
+         break;
++#ifndef HAVE_SAOS
+       case PLIST_STARTSEQNO:
+         smi_add_int_attr_in_list ((*object)->attr_list, PLIST_STARTSEQNO, plist->head ? plist->head->seq : 0);
+         break;
+       case PLIST_ENDSEQNO:
+         smi_add_int_attr_in_list ((*object)->attr_list, PLIST_ENDSEQNO, plist->tail ? plist->tail->seq : 0);
+         break;
++#endif /* HAVE_SAOS */
+       default:
+         continue;
+     }
+@@ -208,12 +210,14 @@ int plist_get_plist_prefixMaster6_ipv6Prefix_api_runtime_attrs(SMI_OBJECT **obje
+       case PLIST_RANGECOUNT6:
+         smi_add_int_attr_in_list ((*object)->attr_list,PLIST_RANGECOUNT6, plist->rangecount);
+         break;
++#ifndef HAVE_SAOS
+       case PLIST_STARTSEQNO6:
+         smi_add_int_attr_in_list ((*object)->attr_list, PLIST_STARTSEQNO6, plist->head ? plist->head->seq : 0);
+         break;
+       case PLIST_ENDSEQNO6:
+         smi_add_int_attr_in_list ((*object)->attr_list, PLIST_ENDSEQNO6, plist->tail ? plist->tail->seq : 0);
+         break;
++#endif /* HAVE_SAOS */
+       default:
+         continue;
+     }
+bash-4.2$

@@ -1,0 +1,100 @@
+
+
+
+
++---------------------------------------------------------------------------------------------+
+|       AS 100                                                                                |
+|                                                                                             |
+|                                                   50.1.1.x                                  |
+|                                              +---------------------+--------------+         |
+|                                              |    (best path)                     |         |
+|                                              |                             port-2 |         |
+|                                              |                         +----------+------+  |
+|  +----------------+                 +--------+-------+                 |                 |  |
+|  |                |    20.1.1.x     |                |                 |                 |  |
+|  |   DUT 1        +-----------------+     DUT 2 (RR) |                 |   DUT-3         |  |
+|  |                |                 |                |                 |                 |  |
+|  +----------------+                 +--------+-------+                 |                 |  |
+|                                              |                         +----------+------+  |
+|                                              |     60.1.1.x                port-3 |         |
+|                                              +---------------------+-------------++         |
+|                                                                                             |
+|                                                                                             |
+|                                                                                             |
+|                                                                                             |
++---------------------------------------------------------------------------------------------+
+
+DUT-1 Config
+~~~~~~~~~~~~~~~~
+!
+interface a16_10_11_2
+ ip address 20.1.1.10/24
+!
+interface lbk
+ ip address 1.1.1.1/32
+ no multicast
+!
+router bgp 100
+ redistribute static
+ neighbor 20.1.1.11 remote-as 100
+ allocate-label all
+ address-family ipv4 labeled-unicast
+ neighbor 20.1.1.11 activate
+ exit-address-family
+
+
+DUT-2 Config
+~~~~~~~~~~~~~~~~
+interface a16_10_11_2
+ ip address 20.1.1.11/24
+!
+interface a16_11_12_3
+ ip address 60.1.1.11/24
+!
+interface a16_11_12_4
+ ip address 50.1.1.11/24
+!
+interface lbk
+ ip address 2.2.2.2/32
+ no multicast
+!
+router bgp 100
+ neighbor 20.1.1.10 remote-as 100
+ neighbor 20.1.1.10 route-reflector-client
+ neighbor 20.1.1.10 next-hop-self
+ neighbor 50.1.1.13 remote-as 100
+ neighbor 60.1.1.13 remote-as 100
+ allocate-label all
+ address-family ipv4 labeled-unicast
+ neighbor 20.1.1.10 activate
+ neighbor 20.1.1.10 route-reflector-client
+ neighbor 20.1.1.10 next-hop-self
+ neighbor 50.1.1.13 activate
+ neighbor 60.1.1.13 activate
+ exit-address-family
+!
+ip route 7.7.7.7/32 20.1.1.10 description static
+!
+
+DUT-3 Config
+~~~~~~~~~~~~~~~~
+interface a16_12_11_3
+ ip address 60.1.1.13/24
+!
+interface a16_12_11_4
+ ip address 50.1.1.13/24
+!
+interface lbk
+ ip address 3.3.3.3/32
+ no multicast
+!
+router bgp 100
+ redistribute connected
+ neighbor 50.1.1.11 remote-as 100
+ neighbor 60.1.1.11 remote-as 100
+ allocate-label all
+ address-family ipv4 labeled-unicast
+ neighbor 50.1.1.11 activate
+ neighbor 60.1.1.11 activate
+ exit-address-family
+!

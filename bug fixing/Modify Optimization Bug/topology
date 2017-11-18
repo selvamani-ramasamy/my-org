@@ -1,0 +1,29 @@
++---------------------------------------------------------------------------------------------+
+|       AS 100                                                                                |
+|                                                                                             |
+|                                                   50.1.1.x                                  |
+|                                              +---------------------+--------------+         |
+|                                              |    (best path)                     |         |
+|                                              |                             port-2 |         |
+|                                              |                         +----------+------+  |
+|  +----------------+                 +--------+-------+                 |                 |  |
+|  |                |    20.1.1.x     |                |                 |                 |  |
+|  |   DUT 1        +-----------------+     DUT 2 (RR) |                 |   DUT-3         |  |
+|  |                |                 |                |                 |                 |  |
+|  +----------------+                 +--------+-------+                 |                 |  |
+|                                              |                         +----------+------+  |
+|                                              |     60.1.1.x                port-3 |         |
+|                                              +---------------------+-------------++         |
+|                                                                                             |
+|                                                                                             |
+|                                                                                             |
+|                                                                                             |
++---------------------------------------------------------------------------------------------+
+
+Initially 50.1.1.x is the best path.  We bring down the port-2 at DUT-3 and then the path getting changed to 50.1.1.x
+It sends FTN add for new path.  It does not send any delete -- that is expected from this fix.  The mplsd updates the FTN entries
+and it is reflecting in 'show mpls ftn-table' output.
+
+Problem observed in ILM:
+- It is sending delete for all prefixes followed by add
+- Also the ILM table is not updated with new nexthop address.

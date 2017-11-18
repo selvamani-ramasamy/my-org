@@ -1,0 +1,59 @@
+bash-4.2$
+bash-4.2$
+bash-4.2$ make cmlgen
+./cmlgen.sh ../.. 'pal lib nsm bgpd isisd ospfd mplsd oamd l2mribd ribd ldpd rsvpd mstpd imi imish vlogd lmpd testapi' 0 0 0 0 1 0
+cmlgen : Nothing to do, code generation skipped
+bash-4.2$
+bash-4.2$ pwd
+/localdata/project/ipi-daemons-integration/packages-saos-tce/zebos/zebos/platform/linux
+bash-4.2$ ls -la cml/infomodel/
+total 5628
+drwxr-xr-x 3 sramasam ciena    4096 Nov 10 20:03 .
+drwxr-xr-x 5 sramasam ciena    4096 Nov 10 19:25 ..
+-rwxr-xr-x 1 sramasam ciena   50220 Nov 10 20:50 cml_data_model.xsd
+-rw-r--r-- 1 sramasam ciena  304090 Nov 10 20:50 cml_data_types.xml
+-rw-r--r-- 1 sramasam ciena   15441 Nov 10 19:25 mib2c.entire_mib.conf
+-rw-r--r-- 1 sramasam ciena  148731 Nov 10 20:50 mo_acl.xml
+-rw-r--r-- 1 sramasam ciena 1128498 Nov 10 20:50 mo_bgp.xml
+-rw-r--r-- 1 sramasam ciena  141780 Nov 10 20:50 mo_bridge.xml
+-rw-r--r-- 1 sramasam ciena    8180 Nov 10 20:50 mo_dhcpc.xml
+-rw-r--r-- 1 sramasam ciena   71042 Nov 10 20:50 mo_gmpls.xml
+-rw-r--r-- 1 sramasam ciena   28872 Nov 10 20:50 mo_igmpsnooping.xml
+-rw-r--r-- 1 sramasam ciena    5952 Nov 10 20:50 mo_imi.xml
+-rw-r--r-- 1 sramasam ciena  144239 Nov 10 20:50 mo_interface.xml
+-rw-r--r-- 1 sramasam ciena  443930 Nov 10 20:50 mo_isis.xml
+-rw-r--r-- 1 sramasam ciena   17972 Nov 10 20:50 mo_keychain.xml
+-rw-r--r-- 1 sramasam ciena    5785 Nov 10 20:50 mo_lacp.xml
+-rw-r--r-- 1 sramasam ciena  248753 Nov 10 20:50 mo_ldp.xml
+-rw-r--r-- 1 sramasam ciena   85489 Nov 10 20:50 mo_lmp.xml
+-rw-r--r-- 1 sramasam ciena   15491 Nov 10 20:50 mo_mldsnooping.xml
+-rw-r--r-- 1 sramasam ciena   19836 Nov 10 20:50 mo_mplsbfd.xml
+-rw-r--r-- 1 sramasam ciena  303574 Nov 10 20:50 mo_mplsexp.xml
+-rw-r--r-- 1 sramasam ciena   50910 Nov 10 20:50 mo_mplsinterface.xml
+-rw-r--r-- 1 sramasam ciena  339253 Nov 10 20:50 mo_mpls.xml
+-rw-r--r-- 1 sramasam ciena  256252 Nov 10 20:50 mo_mstp.xml
+-rw-r--r-- 1 sramasam ciena   72233 Nov 10 20:50 mo_oambfd.xml
+-rw-r--r-- 1 sramasam ciena   29532 Nov 10 20:50 mo_oamlps.xml
+-rw-r--r-- 1 sramasam ciena   84330 Nov 10 20:50 mo_oammplstp.xml
+-rw-r--r-- 1 sramasam ciena   14965 Nov 10 20:50 mo_oamrps.xml
+-rw-r--r-- 1 sramasam ciena  423181 Nov 10 20:50 mo_ospf.xml
+-rw-r--r-- 1 sramasam ciena   83844 Nov 10 20:50 mo_pbb.xml
+-rw-r--r-- 1 sramasam ciena    4945 Nov 10 20:50 mo_pbrport.xml
+-rw-r--r-- 1 sramasam ciena   39861 Nov 10 20:50 mo_plist.xml
+-rw-r--r-- 1 sramasam ciena  131198 Nov 10 20:50 mo_qos.xml
+-rw-r--r-- 1 sramasam ciena  115335 Nov 10 20:50 mo_rib.xml
+-rw-r--r-- 1 sramasam ciena   94828 Nov 10 20:50 mo_routemap.xml
+-rw-r--r-- 1 sramasam ciena  288630 Nov 10 20:50 mo_rsvp.xml
+-rw-r--r-- 1 sramasam ciena   25722 Nov 10 20:50 mo_sr.xml
+-rw-r--r-- 1 sramasam ciena  168688 Nov 10 20:50 mo_switchportinterface.xml
+-rw-r--r-- 1 sramasam ciena  139304 Nov 10 20:50 mo_vlan.xml
+-rw-r--r-- 1 sramasam ciena   84264 Nov 10 20:50 mo_vpls.xml
+-rw-r--r-- 1 sramasam ciena    6741 Nov 10 20:50 mo_vrf.xml
+-rwxr-xr-x 1 sramasam ciena    6743 Nov 10 20:50 mo_vr.xml
+-rw-r--r-- 1 sramasam ciena    4649 Nov 10 20:50 mo_ZebOS.xml
+drwxr-xr-x 3 sramasam ciena    4096 Nov 10 19:25 STD-MIBS
+-rw-r--r-- 1 sramasam ciena     792 Nov 10 20:50 zebmdc.conf
+bash-4.2$ date
+Fri Nov 10 20:50:46 PST 2017
+bash-4.2$
+bash-4.2$
